@@ -1,6 +1,43 @@
 # Visual Studio 2015 user specific files
 .vs/
 
+# Common IntelliJ Platform excludes
+
+# User specific
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/shelf/*
+.idea/dictionaries
+.idea/httpRequests/
+.idea/
+
+# Sensitive or high-churn files
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.xml
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+
+# Rider
+# Rider auto-generates .iml files, and contentModel.xml
+.idea/**/*.iml
+.idea/**/contentModel.xml
+.idea/**/modules.xml
+.idea/.idea.FPSEscapeRoom.dir/*
+
+*.suo
+*.user
+.vs/
+[Bb]in/
+[Oo]bj/
+_UpgradeReport_Files/
+[Pp]ackages/
+
+Thumbs.db
+Desktop.ini
+.DS_Store
+
 # Compiled Object files
 *.slo
 *.lo
@@ -48,6 +85,8 @@ SourceArt/**/*.tga
 # Binary Files
 Binaries/*
 Plugins/*/Binaries/*
+Plugins/Developer/*/Binaries/*
+Plugins/Developer/RiderLink/*
 
 # Builds
 Build/*
@@ -69,6 +108,11 @@ Saved/*
 # Compiled source files for the engine to use
 Intermediate/*
 Plugins/*/Intermediate/*
+Plugins/Developer/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+.idea/.idea.FPSEscapeRoom/.idea/vcs.xml
+.idea/.idea.ThePowerOfFourLeaves/.idea/vcs.xml
+.idea/.idea.ThePowerOfFourLeaves/.idea/indexLayout.xml
+.idea/.idea.ThePowerOfFourLeaves/.idea/discord.xml
