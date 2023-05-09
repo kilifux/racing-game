@@ -53,6 +53,18 @@ class PRAKTYKI_API ACar : public APawn
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAroundAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* BreakAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* SteeringAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* ThrottleAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* HandbrakeAction;
 	
 	bool Choose = true;
 
@@ -73,7 +85,17 @@ public:
 
 	void LookAround(const FInputActionValue& Value);
 
+	void Break(const FInputActionValue& Value);
+
+	void Steering(const FInputActionValue& Value);
+
+	void Throttle(const FInputActionValue& Value);
+
 	void ToggleCamera();
+
+	void Handbrake();
+
+	
 	
 
 };

@@ -12,7 +12,7 @@
 ACar::ACar()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Skeletal Mesh Component"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
@@ -45,7 +45,7 @@ ACar::ACar()
 
 	SteeringWheel = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Steering Wheel"));
 	SteeringWheel->SetupAttachment(SkeletalMeshComponent);
-
+	
 }
 
 // Called when the game starts or when spawned
@@ -67,8 +67,10 @@ void ACar::BeginPlay()
 void ACar::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	AddActorLocalOffset(GetActorForwardVector() * 1000 * DeltaTime);
+	
 	//UE_LOG(LogTemp, Display, TEXT("Velocity: %f"), GetVelocity().Length());
+
+	
 }
 
 // Called to bind functionality to input
@@ -82,6 +84,8 @@ void ACar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(ToggleCameraAction, ETriggerEvent::Started, this, &ACar::ToggleCamera);
 
 		EnhancedInputComponent->BindAction(LookAroundAction, ETriggerEvent::Triggered, this, &ACar::LookAround);
+
+		EnhancedInputComponent->BindAction(ThrottleAction, ETriggerEvent::Triggered, this, &ACar::Throttle);
 
 	}
 
@@ -100,9 +104,29 @@ void ACar::LookAround(const FInputActionValue& Value)
 		else if (CameraExteriorComponent->IsActive() && !CameraInteriorComponent->IsActive())
 		{
 			FRotator CurrentRotation = SpringArmExteriorComponent->GetRelativeRotation();
-			float NewYaw = FMath::Clamp(CurrentRotation.Yaw + LookAxisVector.X, -45.0f, 45.0f);
+			float NewYaw = FMath::Clamp(CurrentRotation.Yaw + LookAxisVector.X, -35.0f, 35.0f);
 			SpringArmExteriorComponent->SetRelativeRotation(FRotator(CurrentRotation.Pitch, NewYaw, CurrentRotation.Roll));
 		}
+}
+
+void ACar::Break(const FInputActionValue& Value)
+{
+	
+}
+
+void ACar::Steering(const FInputActionValue& Value)
+{
+	
+}
+
+void ACar::Throttle(const FInputActionValue& Value)
+{
+	FVector2D ThrottleAxisVector = Value.Get<FVector2D>();
+	FVector ForceToAdd(1000.f, 0.f, 0.f);
+	//AddActorLocalOffset(GetActorForwardVector() * ThrottleAxisVector.X * GetWorld()->GetDeltaSeconds() * ForceToAdd);
+	SkeletalMeshComponent->AddForce(GetActorForwardVector() * ForceToAdd * ThrottleAxisVector.X);// * GetWorld()->GetDeltaSeconds());
+	
+	
 }
 
 void ACar::ToggleCamera()
@@ -122,6 +146,11 @@ void ACar::ToggleCamera()
 	}
 
 	UE_LOG(LogTemp, Display, TEXT("Zmieniles kamere"));
+	
+}
+
+void ACar::Handbrake()
+{
 	
 }
 
