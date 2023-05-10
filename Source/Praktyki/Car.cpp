@@ -92,6 +92,7 @@ void ACar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 		EnhancedInputComponent->BindAction(ThrottleAction, ETriggerEvent::Triggered, this, &ACar::Throttle);
 		EnhancedInputComponent->BindAction(BreakAction, ETriggerEvent::Triggered, this, &ACar::Break);
+		EnhancedInputComponent->BindAction(SteeringAction, ETriggerEvent::Triggered, this, &ACar::Steering);
 
 	}
 
@@ -126,17 +127,17 @@ void ACar::Throttle(const FInputActionValue& Value)
 void ACar::Break(const FInputActionValue& Value)
 {
 	FVector2D ThrottleAxisVector = Value.Get<FVector2D>();
-	FVector ForceToAdd(55000000.f, 0.f, 0.f);
+	FVector ForceToAdd(58000000.f, 0.f, 0.f);
 	
 	SkeletalMeshComponent->AddForce(-GetActorForwardVector() * ForceToAdd * ThrottleAxisVector.X * GetWorld()->GetDeltaSeconds());
 }
 
 void ACar::Steering(const FInputActionValue& Value)
 {
-	
+	float SteeringAxis = Value.Get<float>();
+	FVector Torque = FVector(0.f, 0.f, 200.f) * SteeringAxis;
+	SkeletalMeshComponent->AddTorqueInRadians(GetActorUpVector() * Torque * GetWorld()->GetDeltaSeconds(), NAME_None, true);
 }
-
-
 
 void ACar::ToggleCamera()
 {
