@@ -16,6 +16,7 @@ ACar::ACar()
 
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Skeletal Mesh Component"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
+	//SkeletalMeshComponent->SetCollisionProfileName("PhysicsActor");
 
 	SpringArmInteriorComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm Interior Component"));
 	SpringArmInteriorComponent->SetupAttachment(SkeletalMeshComponent, TEXT("CarInteriorGameplayCamera"));
@@ -33,15 +34,19 @@ ACar::ACar()
 
 	WheelBackLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wheel Back Left"));
 	WheelBackLeft->SetupAttachment(SkeletalMeshComponent, TEXT("wheel_back_left_spin"));
+	//WheelBackLeft->SetCollisionProfileName("PhysicsActor");
 	
 	WheelBackRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wheel Back Right"));
 	WheelBackRight->SetupAttachment(SkeletalMeshComponent, TEXT("wheel_back_right_spin"));
-
+	//WheelBackRight->SetCollisionProfileName("PhysicsActor");
+	
 	WheelFrontLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wheel Front Left"));
 	WheelFrontLeft->SetupAttachment(SkeletalMeshComponent, TEXT("wheel_front_left_spin"));
-
+	//WheelFrontLeft->SetCollisionProfileName("PhysicsActor");
+	
 	WheelFrontRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wheel Front Right"));
 	WheelFrontRight->SetupAttachment(SkeletalMeshComponent, TEXT("wheel_front_right_spin"));
+	//WheelFrontRight->SetCollisionProfileName("PhysicsActor");
 
 	SteeringWheel = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Steering Wheel"));
 	SteeringWheel->SetupAttachment(SkeletalMeshComponent);
@@ -86,6 +91,7 @@ void ACar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(LookAroundAction, ETriggerEvent::Triggered, this, &ACar::LookAround);
 
 		EnhancedInputComponent->BindAction(ThrottleAction, ETriggerEvent::Triggered, this, &ACar::Throttle);
+		EnhancedInputComponent->BindAction(BreakAction, ETriggerEvent::Triggered, this, &ACar::Break);
 
 	}
 
@@ -109,9 +115,20 @@ void ACar::LookAround(const FInputActionValue& Value)
 		}
 }
 
+void ACar::Throttle(const FInputActionValue& Value)
+{
+	FVector2D ThrottleAxisVector = Value.Get<FVector2D>();
+	FVector ForceToAdd(50000000.f, 0.f, 0.f);
+	SkeletalMeshComponent->AddForce(GetActorForwardVector() * ForceToAdd * ThrottleAxisVector.X * GetWorld()->GetDeltaSeconds());
+	
+}
+
 void ACar::Break(const FInputActionValue& Value)
 {
+	FVector2D ThrottleAxisVector = Value.Get<FVector2D>();
+	FVector ForceToAdd(55000000.f, 0.f, 0.f);
 	
+	SkeletalMeshComponent->AddForce(-GetActorForwardVector() * ForceToAdd * ThrottleAxisVector.X * GetWorld()->GetDeltaSeconds());
 }
 
 void ACar::Steering(const FInputActionValue& Value)
@@ -119,15 +136,7 @@ void ACar::Steering(const FInputActionValue& Value)
 	
 }
 
-void ACar::Throttle(const FInputActionValue& Value)
-{
-	FVector2D ThrottleAxisVector = Value.Get<FVector2D>();
-	FVector ForceToAdd(1000.f, 0.f, 0.f);
-	//AddActorLocalOffset(GetActorForwardVector() * ThrottleAxisVector.X * GetWorld()->GetDeltaSeconds() * ForceToAdd);
-	SkeletalMeshComponent->AddForce(GetActorForwardVector() * ForceToAdd * ThrottleAxisVector.X);// * GetWorld()->GetDeltaSeconds());
-	
-	
-}
+
 
 void ACar::ToggleCamera()
 {
