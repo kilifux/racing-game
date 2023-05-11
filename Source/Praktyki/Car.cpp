@@ -46,8 +46,8 @@ ACar::ACar()
 	SteeringWheel = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Steering Wheel"));
 	SteeringWheel->SetupAttachment(SkeletalMeshComponent);
 
-	MaxSpeed = 2000;
-	Acceleration = 800000;
+	MaxSpeed = 2200;
+	Acceleration = 1250000;
 	SteeringSensitivity = 5000;
 	MaxAngularSpeed = 50;
 	SkidThreshold = 0.3f;
@@ -79,6 +79,8 @@ void ACar::Tick(float DeltaTime)
 	UE_LOG(LogTemp, Warning, TEXT("Current velocity: %f"), GetVelocity().Length());
 	//HandleSideDrag();
 	//CounterTorque();
+	
+	
 }
 
 // Called to bind functionality to input
@@ -154,7 +156,7 @@ void ACar::Break(const FInputActionValue& Value)
 	FVector BrakeDirection = -Velocity.GetSafeNormal();
     
 	// Dodanie siły hamującej do komponentu fizyki pojazdu
-	FVector BrakeForceVector = BrakeDirection * BrakeForce * 1.5f;
+	FVector BrakeForceVector = BrakeDirection * BrakeForce * 1.f;
 	SkeletalMeshComponent->AddForce(BrakeForceVector);
 }
 
@@ -213,7 +215,7 @@ void ACar::Steering(const FInputActionValue& Value)
 	SkeletalMeshComponent->AddForce(BrakeForceVector);
 
 	// Dodanie siły oporu bocznego w celu zapobiegania skręcaniu w drifty
-	if (GetVelocity().Length() > 200)
+	if (GetVelocity().Length() > 150)
 	{
 		FVector SideDragForce = -GetActorRightVector() * 100000;
 		SkeletalMeshComponent->AddForce(SideDragForce);	
