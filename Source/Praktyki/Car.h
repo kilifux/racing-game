@@ -68,6 +68,15 @@ class PRAKTYKI_API ACar : public APawn
 	
 	bool Choose = true;
 
+	FVector ThrottleAxisVector;
+	APlayerController* PlayerController;
+	float MaxSpeed;
+	FVector CurrentVelocity;
+	float SteeringSensitivity;
+	float Acceleration;
+	float MaxAngularSpeed;
+	float SkidThreshold;
+
 public:
 	// Sets default values for this pawn's properties
 	ACar();
@@ -95,7 +104,6 @@ public:
 
 	void Handbrake();
 
-	
-	
+	FVector GetSuspensionForce();
 
 };
