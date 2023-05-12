@@ -3,6 +3,7 @@
 
 #include "Car.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
@@ -13,13 +14,13 @@ ACar::ACar()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+		
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Skeletal Mesh Component"));
-	SkeletalMeshComponent->SetupAttachment(RootComponent);
+	SetRootComponent(SkeletalMeshComponent);
 	
 	SpringArmInteriorComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm Interior Component"));
 	SpringArmInteriorComponent->SetupAttachment(SkeletalMeshComponent, TEXT("CarInteriorGameplayCamera"));
-	SpringArmInteriorComponent->TargetArmLength = 35.f;
+	SpringArmInteriorComponent->TargetArmLength = 20.f;
 
 	CameraInteriorComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera Interior Component"));
 	CameraInteriorComponent->SetupAttachment(SpringArmInteriorComponent, USpringArmComponent::SocketName);
@@ -30,18 +31,6 @@ ACar::ACar()
 
 	CameraExteriorComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera Exterior Component"));
 	CameraExteriorComponent->SetupAttachment(SpringArmExteriorComponent, USpringArmComponent::SocketName);
-
-	WheelBackLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wheel Back Left"));
-	WheelBackLeft->SetupAttachment(SkeletalMeshComponent, TEXT("wheel_back_left_spin"));
-	
-	WheelBackRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wheel Back Right"));
-	WheelBackRight->SetupAttachment(SkeletalMeshComponent, TEXT("wheel_back_right_spin"));
-	
-	WheelFrontLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wheel Front Left"));
-	WheelFrontLeft->SetupAttachment(SkeletalMeshComponent, TEXT("wheel_front_left_spin"));
-	
-	WheelFrontRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Wheel Front Right"));
-	WheelFrontRight->SetupAttachment(SkeletalMeshComponent, TEXT("wheel_front_right_spin"));
 
 	SteeringWheel = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Steering Wheel"));
 	SteeringWheel->SetupAttachment(SkeletalMeshComponent);
@@ -76,9 +65,7 @@ void ACar::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//UE_LOG(LogTemp, Display, TEXT("Velocity: %f"), GetVelocity().Length());
-	UE_LOG(LogTemp, Warning, TEXT("Current velocity: %f"), GetVelocity().Length());
-	//HandleSideDrag();
-	//CounterTorque();
+	//UE_LOG(LogTemp, Warning, TEXT("Current velocity: %f"), GetVelocity().Length());
 	
 	
 }
@@ -138,25 +125,18 @@ void ACar::Throttle(const FInputActionValue& Value)
 
 void ACar::Break(const FInputActionValue& Value)
 {
-
 	ThrottleAxisVector = Value.Get<FVector>();
 	// Obliczenie siły hamowania w zależności od wartości wejściowej i parametrów pojazdu
 	float BrakeForce = ThrottleAxisVector.X * Acceleration;
     
 	// Sprawdzenie czy samochód porusza się i czy jest możliwe jego zatrzymanie
 	FVector Velocity = SkeletalMeshComponent->GetPhysicsLinearVelocity();
-	float Speed = Velocity.Size();
-	if (Speed <= 0.1f)
-	{
-		SkeletalMeshComponent->SetPhysicsLinearVelocity(FVector::ZeroVector);
-		return;
-	}
-    
+	
 	// Obliczenie kierunku hamowania
 	FVector BrakeDirection = -Velocity.GetSafeNormal();
     
 	// Dodanie siły hamującej do komponentu fizyki pojazdu
-	FVector BrakeForceVector = BrakeDirection * BrakeForce * 1.f;
+	FVector BrakeForceVector = BrakeDirection * BrakeForce * 1.1f;
 	SkeletalMeshComponent->AddForce(BrakeForceVector);
 }
 
@@ -182,11 +162,8 @@ void ACar::Steering(const FInputActionValue& Value)
 	}
 
 	// Ograniczenie siły skręcającej w przypadku utraty przyczepności lub przeskakiwania
-	FVector SuspensionForce = GetSuspensionForce();
-	float SuspensionForceZ = SuspensionForce.Z;
 	float NormalizedSpeed = Speed / MaxSpeed;
-	FVector BrakeDirection = -GetVelocity().GetSafeNormal();
-	float SkidFactor = FMath::Clamp(1.0f - SuspensionForceZ / SkidThreshold, 0.0f, 1.0f);
+	float SkidFactor = FMath::Clamp(1.0f / SkidThreshold, 0.0f, 1.0f);
 	float SteeringReductionFactor = FMath::Lerp(1.0f, SkidFactor, 0.5);
 	float SteeringForceLimited = SteeringForce * NormalizedSpeed * SteeringReductionFactor;
     
@@ -206,16 +183,9 @@ void ACar::Steering(const FInputActionValue& Value)
 		AngularVelocity.Z = -MaxAngularSpeed;
 		SkeletalMeshComponent->SetPhysicsAngularVelocityInRadians(AngularVelocity);
 	}
-
-	// Ograniczenie siły hamowania w przypadku skręcania
-	float BrakeForceLimited = 100 * FMath::Clamp(1.0f - FMath::Abs(SteeringAngle) / 80, 0.0f, 1.0f);
-
-	// Dodanie siły hamującej do komponentu fizyki pojazdu
-	FVector BrakeForceVector = BrakeDirection * BrakeForceLimited;
-	SkeletalMeshComponent->AddForce(BrakeForceVector);
-
+	
 	// Dodanie siły oporu bocznego w celu zapobiegania skręcaniu w drifty
-	if (GetVelocity().Length() > 150)
+	if (GetVelocity().Length() > 50)
 	{
 		FVector SideDragForce = -GetActorRightVector() * 100000;
 		SkeletalMeshComponent->AddForce(SideDragForce);	
@@ -253,27 +223,5 @@ void ACar::Handbrake()
 	
 }
 
-
-FVector ACar::GetSuspensionForce()
-{
-	// Ustaw długość i kierunek raya
-	float TraceLength = 50;
-	FVector TraceStart = GetActorLocation();
-	FVector TraceEnd = TraceStart - FVector(0.0f, 0.0f, TraceLength);
-
-	// Wykonaj ray tracing
-	FHitResult HitResult;
-	FCollisionQueryParams TraceParams(FName(TEXT("SuspensionTrace")), true, this);
-	if (GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_WorldStatic, TraceParams))
-	{
-		// Oblicz siłę reakcji podłoża na podstawie siły grawitacji i normalnej powierzchni kolizji
-		float GravityMagnitude = GetWorld()->GetGravityZ() * SkeletalMeshComponent->GetMass();
-		FVector GravityForce = FVector(0.0f, 0.0f, GravityMagnitude);
-		FVector NormalForce = -HitResult.Normal * FVector::DotProduct(GravityForce, -HitResult.Normal);
-		return NormalForce;
-	}
-
-	return FVector::ZeroVector;
-}
 
 
