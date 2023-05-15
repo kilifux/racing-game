@@ -18,6 +18,21 @@ void ACar::SetCurrentSpeed()
 	CurrentSpeed = GetVelocity().Length();
 }
 
+float ACar::GetBestTime() const
+{
+	return BestTime;
+}
+
+TArray<float> ACar::GetCurrentTimes() const
+{
+	return CurrentTimes;
+}
+
+float ACar::GetLastTime() const
+{
+	return LastTime;
+}
+
 // Sets default values
 ACar::ACar()
 {
@@ -45,7 +60,7 @@ ACar::ACar()
 	SteeringWheel->SetupAttachment(SkeletalMeshComponent);
 
 	MaxSpeed = 2350;
-	Acceleration = 1300000;
+	Acceleration = 1700000;
 	SteeringSensitivity = 5000;
 	MaxAngularSpeed = 50;
 	SkidThreshold = 0.3f;
@@ -56,7 +71,7 @@ ACar::ACar()
 void ACar::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	PlayerController = Cast<APlayerController>(Controller);
 	
 	if (PlayerController)
@@ -66,9 +81,8 @@ void ACar::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
-
-	GetWorld()->GetTimerManager().SetTimer(CurrentVelocityTimerHandle, this, &ACar::SetCurrentSpeed, 0.1f, true);
 	
+	GetWorld()->GetTimerManager().SetTimer(CurrentVelocityTimerHandle, this, &ACar::SetCurrentSpeed, 0.1f, true);
 }
 
 // Called every frame
@@ -98,6 +112,22 @@ void ACar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	}
 
+}
+
+int ACar::GetCurrentLap() const
+{
+	return CurrentLap;
+}
+
+void ACar::AddLap()
+{
+	CurrentLap += 1;
+	
+	LastTime = PlayerController->GetGameTimeSinceCreation() - CurrentTime;
+	CurrentTime = PlayerController->GetGameTimeSinceCreation();
+	CurrentTimes.Add(LastTime);
+	CurrentTimes.Sort();
+	BestTime = CurrentTimes[0];
 }
 
 void ACar::LookAround(const FInputActionValue& Value)

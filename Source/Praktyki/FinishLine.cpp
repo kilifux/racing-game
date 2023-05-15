@@ -4,15 +4,15 @@
 #include "FinishLine.h"
 
 #include "Car.h"
-#include "CarPlayerController.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "PraktykiGameModeBase.h"
 
 // Sets default values
 AFinishLine::AFinishLine()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Component"));
 	SetRootComponent(BoxComponent);
@@ -31,17 +31,17 @@ void AFinishLine::BeginPlay()
 	BoxComponent->OnComponentBeginOverlap.AddDynamic(this, &AFinishLine::OnCapsuleBeginOverlap);
 
 	Car = Cast<ACar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	CarPlayerController = Cast<ACarPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	PraktykiGameModeBase = Cast<APraktykiGameModeBase>(GetWorld()->GetAuthGameMode());
 	
 }
 
 void AFinishLine::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor->IsA<ACar>())
+	if (OtherActor->IsA<ACar>() && PraktykiGameModeBase)
 	{
-		CarPlayerController->AddLap();
-		UE_LOG(LogTemp, Warning, TEXT("DOTKANLES MNIE! Lap: %u"), CarPlayerController->GetCurrentLap());
+		Car->AddLap();
+		PraktykiGameModeBase->PlayerCrossedFinishLine();
 	}
 }
 

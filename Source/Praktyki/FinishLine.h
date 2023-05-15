@@ -21,7 +21,7 @@ class PRAKTYKI_API AFinishLine : public AActor
 	UStaticMeshComponent* RightPole;
 
 	class ACar* Car;
-	class ACarPlayerController* CarPlayerController;
+	class APraktykiGameModeBase* PraktykiGameModeBase;
 
 public:	
 	// Sets default values for this actor's properties

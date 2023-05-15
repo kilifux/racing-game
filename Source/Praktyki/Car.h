@@ -71,8 +71,25 @@ private:
 	float MaxAngularSpeed;
 	float SkidThreshold;
 
+	int CurrentLap;
 	int CurrentSpeed;
 
+	TArray<float> CurrentTimes;
+	float CurrentTime = 0;
+	float LastTime = 0;
+	float BestTime = 0;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	float GetBestTime() const;
+
+	UFUNCTION(BlueprintCallable)
+	TArray<float> GetCurrentTimes() const;
+
+	UFUNCTION(BlueprintCallable)
+	float GetLastTime() const;
+
+private:
 	FTimerHandle CurrentVelocityTimerHandle;
 
 public:
@@ -97,5 +114,10 @@ public:
 	void Throttle(const FInputActionValue& Value);
 
 	void ToggleCamera();
+
+	UFUNCTION(BlueprintCallable)
+	int GetCurrentLap() const;
+	
+	void AddLap();
 
 };
