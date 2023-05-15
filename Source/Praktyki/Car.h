@@ -46,16 +46,11 @@ class PRAKTYKI_API ACar : public APawn
 	class UInputAction* LookAroundAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* BreakAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* SteeringAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* ThrottleAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* HandbrakeAction;
+	
 	
 	bool Choose = true;
 
@@ -63,10 +58,22 @@ class PRAKTYKI_API ACar : public APawn
 	APlayerController* PlayerController;
 	float MaxSpeed;
 	FVector CurrentVelocity;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	int GetCurrentSpeed() const;
+	
+	void SetCurrentSpeed();
+
+private:
 	float SteeringSensitivity;
 	float Acceleration;
 	float MaxAngularSpeed;
 	float SkidThreshold;
+
+	int CurrentSpeed;
+
+	FTimerHandle CurrentVelocityTimerHandle;
 
 public:
 	// Sets default values for this pawn's properties
@@ -85,15 +92,10 @@ public:
 
 	void LookAround(const FInputActionValue& Value);
 
-	void Break(const FInputActionValue& Value);
-
 	void Steering(const FInputActionValue& Value);
 
 	void Throttle(const FInputActionValue& Value);
 
 	void ToggleCamera();
-
-	void Handbrake();
-	
 
 };

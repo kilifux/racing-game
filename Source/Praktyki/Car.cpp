@@ -3,11 +3,20 @@
 
 #include "Car.h"
 #include "Camera/CameraComponent.h"
-#include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+
+int ACar::GetCurrentSpeed() const
+{
+	return CurrentSpeed / 10;
+}
+
+void ACar::SetCurrentSpeed()
+{
+	CurrentSpeed = GetVelocity().Length();
+}
 
 // Sets default values
 ACar::ACar()
@@ -35,8 +44,8 @@ ACar::ACar()
 	SteeringWheel = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Steering Wheel"));
 	SteeringWheel->SetupAttachment(SkeletalMeshComponent);
 
-	MaxSpeed = 2200;
-	Acceleration = 1250000;
+	MaxSpeed = 2350;
+	Acceleration = 1300000;
 	SteeringSensitivity = 5000;
 	MaxAngularSpeed = 50;
 	SkidThreshold = 0.3f;
@@ -57,6 +66,8 @@ void ACar::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+
+	GetWorld()->GetTimerManager().SetTimer(CurrentVelocityTimerHandle, this, &ACar::SetCurrentSpeed, 0.1f, true);
 	
 }
 
@@ -83,7 +94,6 @@ void ACar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(LookAroundAction, ETriggerEvent::Triggered, this, &ACar::LookAround);
 
 		EnhancedInputComponent->BindAction(ThrottleAction, ETriggerEvent::Triggered, this, &ACar::Throttle);
-		EnhancedInputComponent->BindAction(BreakAction, ETriggerEvent::Triggered, this, &ACar::Break);
 		EnhancedInputComponent->BindAction(SteeringAction, ETriggerEvent::Triggered, this, &ACar::Steering);
 
 	}
@@ -112,32 +122,18 @@ void ACar::Throttle(const FInputActionValue& Value)
 {
 	ThrottleAxisVector = Value.Get<FVector>();
 
-	FVector ForwardForce = GetActorForwardVector() * ThrottleAxisVector.X * Acceleration;
-	SkeletalMeshComponent->AddForce(ForwardForce);
+	if (ThrottleAxisVector.X <= 0)
+	{
+		ThrottleAxisVector.X /= 1.5;
+	}
 
+	SkeletalMeshComponent->AddForce(GetActorForwardVector() * ThrottleAxisVector.X * Acceleration);
 	CurrentVelocity = SkeletalMeshComponent->GetPhysicsLinearVelocity();
 	
 	if (CurrentVelocity.Length() > MaxSpeed)
 	{
 		SkeletalMeshComponent->SetPhysicsLinearVelocity(CurrentVelocity.GetSafeNormal() * MaxSpeed);
 	}
-}
-
-void ACar::Break(const FInputActionValue& Value)
-{
-	ThrottleAxisVector = Value.Get<FVector>();
-	// Obliczenie siły hamowania w zależności od wartości wejściowej i parametrów pojazdu
-	float BrakeForce = ThrottleAxisVector.X * Acceleration;
-    
-	// Sprawdzenie czy samochód porusza się i czy jest możliwe jego zatrzymanie
-	FVector Velocity = SkeletalMeshComponent->GetPhysicsLinearVelocity();
-	
-	// Obliczenie kierunku hamowania
-	FVector BrakeDirection = -Velocity.GetSafeNormal();
-    
-	// Dodanie siły hamującej do komponentu fizyki pojazdu
-	FVector BrakeForceVector = BrakeDirection * BrakeForce * 1.1f;
-	SkeletalMeshComponent->AddForce(BrakeForceVector);
 }
 
 void ACar::Steering(const FInputActionValue& Value)
@@ -170,19 +166,6 @@ void ACar::Steering(const FInputActionValue& Value)
 	// Dodanie siły skręcającej do komponentu fizyki pojazdu
 	FVector TorqueVector = FVector(0.0f, 0.0f, SteeringForceLimited);
 	SkeletalMeshComponent->AddTorqueInRadians(TorqueVector);
-
-	// Ograniczenie prędkości kątowej pojazdu do wartości maksymalnej
-	FVector AngularVelocity = SkeletalMeshComponent->GetPhysicsAngularVelocityInRadians();
-	if (AngularVelocity.Z > MaxAngularSpeed)
-	{
-		AngularVelocity.Z = MaxAngularSpeed;
-		SkeletalMeshComponent->SetPhysicsAngularVelocityInRadians(AngularVelocity);
-	}
-	else if (AngularVelocity.Z < -MaxAngularSpeed)
-	{
-		AngularVelocity.Z = -MaxAngularSpeed;
-		SkeletalMeshComponent->SetPhysicsAngularVelocityInRadians(AngularVelocity);
-	}
 	
 	// Dodanie siły oporu bocznego w celu zapobiegania skręcaniu w drifty
 	if (GetVelocity().Length() > 50)
@@ -218,10 +201,6 @@ void ACar::ToggleCamera()
 	
 }
 
-void ACar::Handbrake()
-{
-	
-}
 
 
 

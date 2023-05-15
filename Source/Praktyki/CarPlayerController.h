@@ -15,8 +15,7 @@ class PRAKTYKI_API ACarPlayerController : public APlayerController
 	
 	int Laps;
 	int CurrentLap;
-
-	FDateTime Time;
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widgets", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UUserWidget> HUDWidgetClass;

@@ -13,8 +13,7 @@ void ACarPlayerController::BeginPlay()
 	
 	Laps = 1;
 	CurrentLap = 0;
-
-	Time = FDateTime::UtcNow();
+	
 }
 
 
