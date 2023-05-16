@@ -20,6 +20,12 @@ class PRAKTYKI_API UEndGameWidget : public UUserWidget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
 	class UBorder* TableBorderResults;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
+	class UButton* RestartButton;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
+	class UButton* ExitButton;
+
 	int Minutes;
 	int Seconds;
 	int Milliseconds;
@@ -31,4 +37,7 @@ public:
 
 	void SetTableResults(int Index, float BestLapTime, float FinalTime);
 	FString TimeToFormat(float TimeToFormat);
+
+	UFUNCTION()
+	void RestartLevel();
 };

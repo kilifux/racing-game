@@ -23,6 +23,10 @@ void ACarPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner)
 	
 	if (EndGameWidget)
 	{
+		bShowMouseCursor = true;
+		bEnableClickEvents = true;
+		bEnableMouseOverEvents = true;
+		
 		EndGameWidget->SetTableResults(0, Car->GetBestTime(), GetGameTimeSinceCreation());
 		EndGameWidget->AddToViewport();
 		
@@ -30,9 +34,7 @@ void ACarPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner)
 		{
 			InGameHUD->RemoveWidget();
 		}
-		
-		
-		
+
 	}
 	
 }

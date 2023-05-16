@@ -42,8 +42,13 @@ void AFinishLine::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 	if (OtherActor->IsA<ACar>() && PraktykiGameModeBase)
 	{
 		Car->AddLap();
+		if (InGameHUD)
+		{
+			InGameHUD->UpdateLapsText(Car->GetCurrentLap(), PraktykiGameModeBase->GetLaps());
+		}
+		
 		PraktykiGameModeBase->PlayerCrossedFinishLine();
-		InGameHUD->UpdateLapsText(Car->GetCurrentLap(), PraktykiGameModeBase->GetLaps());
+		
 	}
 }
 

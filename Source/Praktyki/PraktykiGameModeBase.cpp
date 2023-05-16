@@ -23,6 +23,7 @@ void APraktykiGameModeBase::PlayerCrossedFinishLine()
 		CarPlayerController->GameHasEnded(Car, true);
 		Car->DetachFromControllerPendingDestroy();
 		
+		
 	}
 }
 
