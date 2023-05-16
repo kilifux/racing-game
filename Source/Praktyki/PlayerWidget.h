@@ -36,6 +36,8 @@ class PRAKTYKI_API UPlayerWidget : public UUserWidget
 	int Seconds;
 	int Milliseconds;
 
+	FWidgetTransform WidgetTransform;
+
 	
 public:
 	UPlayerWidget(const FObjectInitializer& ObjectInitializer);
@@ -45,7 +47,7 @@ public:
 
 	void UpdateCurrentSpeedText(int Value);
 	void UpdateLapsText(int CurrentLap, int Laps);
-	void UpdateCurrentTimeText(float Value);
+	void UpdateCurrentTimeText(float RaceTime, float LapTime);
 	void UpdateBestLastTimeText(float BestTime, float LastTime);
 	void UpdateTable(int LapIndex, float Time, float DeltaBest);
 };

@@ -29,7 +29,7 @@ public:
 
 	void UpdateLapsText(int CurrentLap, int Laps);
 
-	void UpdateCurrentTimeText(float Value);
+	void UpdateCurrentTimeText(float RaceTime, float LapTime);
 
 	void UpdateBestLastTimeText(float BestTime, float LastTime);
 

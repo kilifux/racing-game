@@ -95,8 +95,8 @@ void ACar::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	CurrentTime = PlayerController->GetGameTimeSinceCreation();
-	InGameHUD->UpdateCurrentTimeText(CurrentTime);
-	
+	LastTime = PlayerController->GetGameTimeSinceCreation() - LapTime;
+	InGameHUD->UpdateCurrentTimeText(CurrentTime, LastTime);
 }
 
 // Called to bind functionality to input
@@ -127,14 +127,13 @@ void ACar::AddLap()
 {
 	CurrentLap += 1;
 	
-	LastTime = PlayerController->GetGameTimeSinceCreation() - LapTime;
+	
 	LapTime = PlayerController->GetGameTimeSinceCreation();
 	LapTimes.Add(LastTime);
 	LapTimes.Sort();
-	BestTime = LapTimes[0];
-
-	InGameHUD->UpdateBestLastTimeText(BestTime, LastTime);
 	InGameHUD->UpdateTable(LapTimes.Num(), LastTime, BestTime - LastTime);
+	BestTime = LapTimes[0];
+	InGameHUD->UpdateBestLastTimeText(BestTime, LastTime);
 }
 
 void ACar::LookAround(const FInputActionValue& Value)

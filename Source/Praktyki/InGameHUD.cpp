@@ -44,11 +44,11 @@ void AInGameHUD::UpdateLapsText(int CurrentLap, int Laps)
 	}
 }
 
-void AInGameHUD::UpdateCurrentTimeText(float Value)
+void AInGameHUD::UpdateCurrentTimeText(float RaceTime, float LapTime)
 {
 	if (PlayerWidget)
 	{
-		PlayerWidget->UpdateCurrentTimeText(Value);
+		PlayerWidget->UpdateCurrentTimeText(RaceTime,LapTime);
 	}
 }
 
