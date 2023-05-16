@@ -15,5 +15,20 @@ class PRAKTYKI_API UEndGameWidget : public UUserWidget
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
-	class UTextBlock* TXTEndGame;
+	class UTextBlock* TXTTableResults;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
+	class UBorder* TableBorderResults;
+
+	int Minutes;
+	int Seconds;
+	int Milliseconds;
+	
+public:
+	UEndGameWidget(const FObjectInitializer& ObjectInitializer);
+
+	virtual void NativeConstruct() override;
+
+	void SetTableResults(int Index, float BestLapTime, float FinalTime);
+	FString TimeToFormat(float TimeToFormat);
 };

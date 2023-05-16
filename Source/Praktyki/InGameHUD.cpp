@@ -12,6 +12,7 @@ AInGameHUD::AInGameHUD()
 void AInGameHUD::DrawHUD()
 {
 	Super::DrawHUD();
+	
 }
 
 void AInGameHUD::BeginPlay()
@@ -26,6 +27,11 @@ void AInGameHUD::BeginPlay()
 			PlayerWidget->AddToViewport();
 		}
 	}
+}
+
+void AInGameHUD::RemoveWidget()
+{
+	PlayerWidget->RemoveFromParent();
 }
 
 void AInGameHUD::UpdateCurrenSpeedText(int Value)

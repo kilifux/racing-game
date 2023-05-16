@@ -20,10 +20,12 @@ class PRAKTYKI_API AInGameHUD : public AHUD
 	class UPlayerWidget* PlayerWidget;
 public:
 	AInGameHUD();
-
+	
 	virtual void DrawHUD() override;
 
 	virtual void BeginPlay() override;
+
+	void RemoveWidget();
 	
 	void UpdateCurrenSpeedText(int Value);
 

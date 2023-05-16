@@ -3,6 +3,7 @@
 
 #include "PraktykiGameModeBase.h"
 #include "Car.h"
+#include "CarPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -10,6 +11,7 @@ void APraktykiGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	Car = Cast<ACar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	CarPlayerController = Cast<ACarPlayerController>(GetWorld()->GetFirstPlayerController());
 	Laps = 2;
 }
 
@@ -18,7 +20,9 @@ void APraktykiGameModeBase::PlayerCrossedFinishLine()
 {
 	if (Car->GetCurrentLap() == Laps)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Koniec Gry"));
+		CarPlayerController->GameHasEnded(Car, true);
+		Car->DetachFromControllerPendingDestroy();
+		
 	}
 }
 

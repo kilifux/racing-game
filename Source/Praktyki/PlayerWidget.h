@@ -36,9 +36,6 @@ class PRAKTYKI_API UPlayerWidget : public UUserWidget
 	int Seconds;
 	int Milliseconds;
 
-	FWidgetTransform WidgetTransform;
-
-	
 public:
 	UPlayerWidget(const FObjectInitializer& ObjectInitializer);
 

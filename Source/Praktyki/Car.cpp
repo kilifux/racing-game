@@ -23,6 +23,11 @@ void ACar::SetCurrentSpeed()
 	}
 }
 
+float ACar::GetFinalTime() const
+{
+	return FinalTime;
+}
+
 float ACar::GetBestTime() const
 {
 	return BestTime;
@@ -37,6 +42,7 @@ float ACar::GetLastTime() const
 {
 	return LastTime;
 }
+
 
 // Sets default values
 ACar::ACar()
@@ -126,9 +132,7 @@ int ACar::GetCurrentLap() const
 void ACar::AddLap()
 {
 	CurrentLap += 1;
-	
-	
-	LapTime = PlayerController->GetGameTimeSinceCreation();
+	LapTime = PlayerController->GetGameTimeSinceCreation();;
 	LapTimes.Add(LastTime);
 	LapTimes.Sort();
 	InGameHUD->UpdateTable(LapTimes.Num(), LastTime, BestTime - LastTime);

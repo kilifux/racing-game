@@ -17,6 +17,7 @@ class PRAKTYKI_API APraktykiGameModeBase : public AGameModeBase
 	int Laps;
 
 	class ACar* Car;
+	class ACarPlayerController* CarPlayerController;
 
 public:
 	UFUNCTION(BlueprintCallable)

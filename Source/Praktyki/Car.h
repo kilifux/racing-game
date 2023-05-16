@@ -81,8 +81,11 @@ private:
 	float CurrentTime = 0;
 	float LastTime = 0;
 	float BestTime = 0;
+	float FinalTime = 0;
 
 public:
+	float GetFinalTime() const;
+
 	UFUNCTION(BlueprintCallable)
 	float GetBestTime() const;
 
