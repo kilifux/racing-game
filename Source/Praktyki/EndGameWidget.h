@@ -40,4 +40,7 @@ public:
 
 	UFUNCTION()
 	void RestartLevel();
+
+	UFUNCTION()
+	void ExitLevel();
 };

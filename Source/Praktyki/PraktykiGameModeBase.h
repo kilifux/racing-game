@@ -15,7 +15,10 @@ class PRAKTYKI_API APraktykiGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 	int Laps;
+	float MaxTime;
+	int Mode;
 
+	
 	class ACar* Car;
 	class ACarPlayerController* CarPlayerController;
 

@@ -21,7 +21,15 @@ class PRAKTYKI_API ACarPlayerController : public APlayerController
 	class AInGameHUD* InGameHUD;
 	
 	class ACar* Car;
-	
+
+public:
+	int GetLaps() const;
+	void SetLaps(const int NewLaps);
+	float GetMaxTime() const;
+	void SetMaxTime(const float NewMaxTime);
+	int GetMode() const;
+	void SetMode(const int NewMode);
+
 
 protected:
 	// Called when the game starts or when spawned

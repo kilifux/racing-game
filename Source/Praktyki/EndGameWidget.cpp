@@ -18,7 +18,12 @@ void UEndGameWidget::NativeConstruct()
 
 	if (RestartButton)
 	{
-		RestartButton->OnClicked.AddDynamic(this,&UEndGameWidget::RestartLevel);
+		RestartButton->OnClicked.AddDynamic(this, &UEndGameWidget::RestartLevel);
+	}
+
+	if (ExitButton)
+	{
+		ExitButton->OnClicked.AddDynamic(this, &UEndGameWidget::ExitLevel);
 	}
 }
 
@@ -42,5 +47,10 @@ FString UEndGameWidget::TimeToFormat(float TimeToFormat)
 
 void UEndGameWidget::RestartLevel()
 {
-	UGameplayStatics::OpenLevel(this, "TestMap");
+	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()));
+}
+
+void UEndGameWidget::ExitLevel()
+{
+	UGameplayStatics::OpenLevel(this, FName("MainMenu"));
 }
