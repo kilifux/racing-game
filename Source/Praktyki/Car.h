@@ -52,6 +52,8 @@ class PRAKTYKI_API ACar : public APawn
 	class UInputAction* ThrottleAction;
 	
 	
+	class AInGameHUD* InGameHUD;
+	
 	bool Choose = true;
 
 	FVector ThrottleAxisVector;
@@ -74,7 +76,8 @@ private:
 	int CurrentLap;
 	int CurrentSpeed;
 
-	TArray<float> CurrentTimes;
+	TArray<float> LapTimes;
+	float LapTime = 0;
 	float CurrentTime = 0;
 	float LastTime = 0;
 	float BestTime = 0;
@@ -84,7 +87,7 @@ public:
 	float GetBestTime() const;
 
 	UFUNCTION(BlueprintCallable)
-	TArray<float> GetCurrentTimes() const;
+	TArray<float> GetLapTimes() const;
 
 	UFUNCTION(BlueprintCallable)
 	float GetLastTime() const;

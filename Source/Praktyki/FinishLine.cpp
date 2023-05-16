@@ -4,6 +4,7 @@
 #include "FinishLine.h"
 
 #include "Car.h"
+#include "InGameHUD.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PraktykiGameModeBase.h"
@@ -32,7 +33,7 @@ void AFinishLine::BeginPlay()
 
 	Car = Cast<ACar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	PraktykiGameModeBase = Cast<APraktykiGameModeBase>(GetWorld()->GetAuthGameMode());
-	
+	InGameHUD = Cast<AInGameHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 }
 
 void AFinishLine::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -42,6 +43,7 @@ void AFinishLine::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 	{
 		Car->AddLap();
 		PraktykiGameModeBase->PlayerCrossedFinishLine();
+		InGameHUD->UpdateLapsText(Car->GetCurrentLap(), PraktykiGameModeBase->GetLaps());
 	}
 }
 

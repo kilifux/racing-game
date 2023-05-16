@@ -8,8 +8,8 @@ void ACarPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	HUDUserWidget = CreateWidget(this, HUDWidgetClass);
-	HUDUserWidget->AddToViewport();
+	/*HUDUserWidget = CreateWidget(this, HUDWidgetClass);
+	HUDUserWidget->AddToViewport();*/
 	
 }
 

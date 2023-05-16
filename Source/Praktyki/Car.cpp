@@ -2,6 +2,7 @@
 
 
 #include "Car.h"
+#include "InGameHUD.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/InputComponent.h"
@@ -16,6 +17,10 @@ int ACar::GetCurrentSpeed() const
 void ACar::SetCurrentSpeed()
 {
 	CurrentSpeed = GetVelocity().Length();
+	if (InGameHUD)
+	{
+		InGameHUD->UpdateCurrenSpeedText(GetCurrentSpeed());
+	}
 }
 
 float ACar::GetBestTime() const
@@ -23,9 +28,9 @@ float ACar::GetBestTime() const
 	return BestTime;
 }
 
-TArray<float> ACar::GetCurrentTimes() const
+TArray<float> ACar::GetLapTimes() const
 {
-	return CurrentTimes;
+	return LapTimes;
 }
 
 float ACar::GetLastTime() const
@@ -81,7 +86,7 @@ void ACar::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
-	
+	InGameHUD = Cast<AInGameHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	GetWorld()->GetTimerManager().SetTimer(CurrentVelocityTimerHandle, this, &ACar::SetCurrentSpeed, 0.1f, true);
 }
 
@@ -89,9 +94,8 @@ void ACar::BeginPlay()
 void ACar::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//UE_LOG(LogTemp, Display, TEXT("Velocity: %f"), GetVelocity().Length());
-	//UE_LOG(LogTemp, Warning, TEXT("Current velocity: %f"), GetVelocity().Length());
-	
+	CurrentTime = PlayerController->GetGameTimeSinceCreation();
+	InGameHUD->UpdateCurrentTimeText(CurrentTime);
 	
 }
 
@@ -123,11 +127,14 @@ void ACar::AddLap()
 {
 	CurrentLap += 1;
 	
-	LastTime = PlayerController->GetGameTimeSinceCreation() - CurrentTime;
-	CurrentTime = PlayerController->GetGameTimeSinceCreation();
-	CurrentTimes.Add(LastTime);
-	CurrentTimes.Sort();
-	BestTime = CurrentTimes[0];
+	LastTime = PlayerController->GetGameTimeSinceCreation() - LapTime;
+	LapTime = PlayerController->GetGameTimeSinceCreation();
+	LapTimes.Add(LastTime);
+	LapTimes.Sort();
+	BestTime = LapTimes[0];
+
+	InGameHUD->UpdateBestLastTimeText(BestTime, LastTime);
+	InGameHUD->UpdateTable(LapTimes.Num(), LastTime, BestTime - LastTime);
 }
 
 void ACar::LookAround(const FInputActionValue& Value)
