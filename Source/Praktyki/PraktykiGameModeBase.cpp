@@ -4,7 +4,7 @@
 #include "PraktykiGameModeBase.h"
 #include "Car.h"
 #include "CarPlayerController.h"
-#include "MainMenuWidget.h"
+#include "GameInstanceBase.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -13,6 +13,10 @@ void APraktykiGameModeBase::BeginPlay()
 	Super::BeginPlay();
 	Car = Cast<ACar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	CarPlayerController = Cast<ACarPlayerController>(GetWorld()->GetFirstPlayerController());
+	GameInstanceBase = GetGameInstance<UGameInstanceBase>();
+
+	Laps = GameInstanceBase->GetLaps();
+	GetWorld()->GetTimerManager().SetTimer(TimeLeftTimerHandle, this, &APraktykiGameModeBase::CheckTimeLeft, 0.1f, true);
 }
 
 
@@ -22,8 +26,15 @@ void APraktykiGameModeBase::PlayerCrossedFinishLine()
 	{
 		CarPlayerController->GameHasEnded(Car, true);
 		Car->DetachFromControllerPendingDestroy();
-		
-		
+	}
+}
+
+void APraktykiGameModeBase::CheckTimeLeft()
+{
+	if (Car->GetTimeLeft() <= 0)
+	{
+		CarPlayerController->GameHasEnded(Car, false);
+		Car->DetachFromControllerPendingDestroy();
 	}
 }
 

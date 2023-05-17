@@ -24,6 +24,16 @@ FString UPlayerWidget::TimeToFormat(float TimeToFormat)
 	return FString::Printf(TEXT("%d:%02d.%03d"), Minutes, Seconds, Milliseconds);
 }
 
+void UPlayerWidget::UpdateMaxTime(float Value)
+{
+	TXTMaxTime->SetText(FText::FromString(TimeToFormat(Value)));
+}
+
+void UPlayerWidget::UpdateMode(FString Mode)
+{
+	TXTMode->SetText(FText::FromString(Mode));
+}
+
 void UPlayerWidget::UpdateCurrentSpeedText(int Value)
 {
 	TXTCurrentSpeed->SetText(FText::FromString(FString::FromInt(Value) + " KM/H"));
@@ -36,7 +46,11 @@ void UPlayerWidget::UpdateLapsText(int CurrentLap, int Laps)
 
 void UPlayerWidget::UpdateCurrentTimeText(float RaceTime, float LapTime)
 {
-	TXTCurrentTime->SetText(FText::FromString("TIME   \t\t\t\t" + TimeToFormat(RaceTime) + "\nLAP TIME \t" + TimeToFormat(LapTime)));
+	if (TXTCurrentTime && RaceTime > 0 && LapTime > 0)
+	{
+		TXTCurrentTime->SetText(FText::FromString("TIME   \t\t\t\t" + TimeToFormat(RaceTime) + "\nLAP TIME \t" + TimeToFormat(LapTime)));
+	}
+	
 }
 
 void UPlayerWidget::UpdateBestLastTimeText(float BestTime, float LastTime)

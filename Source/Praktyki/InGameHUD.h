@@ -37,7 +37,9 @@ public:
 
 	void UpdateTable(int LapIndex, float Time, float DeltaBest);
 	
-	
+	void UpdateMaxTime(float Value);
+
+	void UpdateMode(FString Mode);
 };
 
 

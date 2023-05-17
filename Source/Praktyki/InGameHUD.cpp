@@ -73,3 +73,19 @@ void AInGameHUD::UpdateTable(int LapIndex, float Time, float DeltaBest)
 		PlayerWidget->UpdateTable(LapIndex, Time, DeltaBest);
 	}
 }
+
+void AInGameHUD::UpdateMaxTime(float Value)
+{
+	if (PlayerWidget)
+	{
+		PlayerWidget->UpdateMaxTime(Value);
+	}
+}
+
+void AInGameHUD::UpdateMode(FString Mode)
+{
+	if (PlayerWidget)
+	{
+		PlayerWidget->UpdateMode(Mode);
+	}
+}

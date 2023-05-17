@@ -17,11 +17,11 @@ class PRAKTYKI_API APraktykiGameModeBase : public AGameModeBase
 	int Laps;
 	float MaxTime;
 	int Mode;
-
 	
 	class ACar* Car;
 	class ACarPlayerController* CarPlayerController;
-
+	class UGameInstanceBase* GameInstanceBase;
+	FTimerHandle TimeLeftTimerHandle;
 public:
 	UFUNCTION(BlueprintCallable)
 	int GetLaps() const;
@@ -30,6 +30,8 @@ public:
 
 	void PlayerCrossedFinishLine();
 
+	UFUNCTION()
+	void CheckTimeLeft();
 
 protected:
 	// Called when the game starts or when spawned

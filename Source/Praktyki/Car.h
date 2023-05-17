@@ -53,6 +53,8 @@ class PRAKTYKI_API ACar : public APawn
 	
 	
 	class AInGameHUD* InGameHUD;
+
+	class UGameInstanceBase* GameInstanceBase;
 	
 	bool Choose = true;
 
@@ -75,15 +77,19 @@ private:
 
 	int CurrentLap;
 	int CurrentSpeed;
-
+	
 	TArray<float> LapTimes;
 	float LapTime = 0;
 	float CurrentTime = 0;
 	float LastTime = 0;
 	float BestTime = 0;
 	float FinalTime = 0;
+	float MaxTime = 30;
+	float TimeLeft = 30;
 
 public:
+	float GetTimeLeft() const;
+
 	float GetFinalTime() const;
 
 	UFUNCTION(BlueprintCallable)

@@ -47,11 +47,8 @@ class PRAKTYKI_API UMainMenuWidget : public UUserWidget
 	int Minutes;
 	int Seconds;
 	
-	float MaxTime;
-	int Mode;
-	int Laps;
-
-	class ACarPlayerController* CarPlayerController;
+	class UGameInstanceBase* GameInstanceBase;
+	
 
 public:
 	UMainMenuWidget(const FObjectInitializer& ObjectInitializer);
@@ -70,10 +67,5 @@ public:
 
 	UFUNCTION()
 	void StartLevel();
-
-	float GetMaxTime() const;
-	int GetMode() const;
-	int GetLaps() const;
-	
 	
 };

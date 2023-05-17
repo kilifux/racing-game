@@ -32,6 +32,11 @@ class PRAKTYKI_API UPlayerWidget : public UUserWidget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
 	UTextBlock* TXTTable;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
+	UTextBlock* TXTMaxTime;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
+	UTextBlock* TXTMode;
+	
 	int Minutes;
 	int Seconds;
 	int Milliseconds;
@@ -42,6 +47,9 @@ public:
 	virtual void NativeConstruct() override;
 	FString TimeToFormat(float TimeToFormat);
 
+
+	void UpdateMaxTime(float Value);
+	void UpdateMode(FString Mode);
 	void UpdateCurrentSpeedText(int Value);
 	void UpdateLapsText(int CurrentLap, int Laps);
 	void UpdateCurrentTimeText(float RaceTime, float LapTime);

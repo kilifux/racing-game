@@ -7,6 +7,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
+#include "GameInstanceBase.h"
 #include "EnhancedInputSubsystems.h"
 
 int ACar::GetCurrentSpeed() const
@@ -21,6 +22,11 @@ void ACar::SetCurrentSpeed()
 	{
 		InGameHUD->UpdateCurrenSpeedText(GetCurrentSpeed());
 	}
+}
+
+float ACar::GetTimeLeft() const
+{
+	return TimeLeft;
 }
 
 float ACar::GetFinalTime() const
@@ -94,6 +100,17 @@ void ACar::BeginPlay()
 	}
 	InGameHUD = Cast<AInGameHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	GetWorld()->GetTimerManager().SetTimer(CurrentVelocityTimerHandle, this, &ACar::SetCurrentSpeed, 0.1f, true);
+	GameInstanceBase = GetGameInstance<UGameInstanceBase>();
+	MaxTime = GameInstanceBase->GetMaxTime();
+
+	if (GameInstanceBase->GetMode() == 1)
+	{
+		InGameHUD->UpdateMode(TEXT("PRACTICE"));
+	}
+	else
+	{
+		InGameHUD->UpdateMode(TEXT("RACE"));
+	}
 }
 
 // Called every frame
@@ -102,7 +119,13 @@ void ACar::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	CurrentTime = PlayerController->GetGameTimeSinceCreation();
 	LastTime = PlayerController->GetGameTimeSinceCreation() - LapTime;
+	TimeLeft = MaxTime - CurrentTime;
 	InGameHUD->UpdateCurrentTimeText(CurrentTime, LastTime);
+	if (TimeLeft > 0)
+	{
+		InGameHUD->UpdateMaxTime(TimeLeft);
+	}
+	
 }
 
 // Called to bind functionality to input

@@ -29,7 +29,7 @@ void UEndGameWidget::NativeConstruct()
 
 void UEndGameWidget::SetTableResults(int Index, float BestLapTime, float FinalTime)
 {
-	if (TXTTableResults)
+	if (TXTTableResults && BestLapTime > 0 && FinalTime > 0)
 	{
 		TXTTableResults->SetText(FText::FromString(FString::FromInt(Index) + "\t\t\t\t\t\t\t\t\t\t" + TimeToFormat(BestLapTime) + "\t\t\t\t\t\t\t\t\t\t" + TimeToFormat(FinalTime)));
 	}

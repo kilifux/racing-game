@@ -28,14 +28,25 @@ void ACarPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner)
 		bEnableClickEvents = true;
 		bEnableMouseOverEvents = true;
 		
-		EndGameWidget->SetTableResults(0, Car->GetBestTime(), GetGameTimeSinceCreation());
-		EndGameWidget->AddToViewport();
-		
 		if(InGameHUD)
 		{
 			InGameHUD->RemoveWidget();
 		}
-
+		
+		if (bIsWinner)
+		{
+			EndGameWidget->SetTableResults(0, Car->GetBestTime(), GetGameTimeSinceCreation());
+			EndGameWidget->AddToViewport();
+		}
+		else
+		{
+			EndGameWidget->AddToViewport();
+		}
+		
+		/*if (Car)
+		{
+			Car->DetachFromControllerPendingDestroy();
+		}*/
 	}
 	
 }

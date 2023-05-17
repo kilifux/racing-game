@@ -2,7 +2,7 @@
 
 
 #include "MainMenuWidget.h"
-
+#include "GameInstanceBase.h"
 #include "Components/Button.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
@@ -17,12 +17,18 @@ void UMainMenuWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	GameInstanceBase = GetGameInstance<UGameInstanceBase>();
+	
 	LapSlider->OnValueChanged.AddDynamic(this, &UMainMenuWidget::GetLapSliderValue);
 	MaxTimeSlider->OnValueChanged.AddDynamic(this, &UMainMenuWidget::GetMaxTimeValue);
 	ModeSlider->OnValueChanged.AddDynamic(this, &UMainMenuWidget::GetModeValue);
 
 	StartButton->OnClicked.AddDynamic(this, &UMainMenuWidget::StartLevel);
-	
+	LapSliderText->SetVisibility(ESlateVisibility::Hidden);
+	LapSlider->SetVisibility(ESlateVisibility::Hidden);
+	GameInstanceBase->SetLaps(1);
+	GameInstanceBase->SetMaxTime(30);
+	GameInstanceBase->SetMode(1);
 }
 
 FString UMainMenuWidget::TimeToFormat(float TimeToFormat)
@@ -35,26 +41,31 @@ FString UMainMenuWidget::TimeToFormat(float TimeToFormat)
 
 void UMainMenuWidget::GetLapSliderValue(float Value)
 {
-	Laps = Value;
+	GameInstanceBase->SetLaps(Value);	
 	LapSliderText->SetText(FText::FromString(FString::FromInt(Value)));
 }
 
 void UMainMenuWidget::GetMaxTimeValue(float Value)
 {
-	MaxTime = Value;
+	GameInstanceBase->SetMaxTime(Value);
 	MaxTimeText->SetText(FText::FromString(TimeToFormat(Value)));
 }
 
 void UMainMenuWidget::GetModeValue(float Value)
 {
-	Mode = Value;
+	GameInstanceBase->SetMode(Value);
 	if (Value == 1)
 	{
 		ModeText->SetText(FText::FromString("Practice"));
+		GameInstanceBase->SetLaps(1);
+		LapSliderText->SetVisibility(ESlateVisibility::Hidden);
+		LapSlider->SetVisibility(ESlateVisibility::Hidden);
 	}
 	else if (Value == 2)
 	{
 		ModeText->SetText(FText::FromString("Race"));
+		LapSliderText->SetVisibility(ESlateVisibility::Visible);
+		LapSlider->SetVisibility(ESlateVisibility::Visible);
 	}
 	
 }
@@ -62,19 +73,4 @@ void UMainMenuWidget::GetModeValue(float Value)
 void UMainMenuWidget::StartLevel()
 {
 	UGameplayStatics::OpenLevel(this, FName("TestMap"));
-}
-
-float UMainMenuWidget::GetMaxTime() const
-{
-	return MaxTime;
-}
-
-int UMainMenuWidget::GetMode() const
-{
-	return Mode;
-}
-
-int UMainMenuWidget::GetLaps() const
-{
-	return Laps;
 }
