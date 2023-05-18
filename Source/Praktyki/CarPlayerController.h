@@ -20,6 +20,11 @@ class PRAKTYKI_API ACarPlayerController : public APlayerController
 	class AInGameHUD* InGameHUD;
 	class ACar* Car;
 
+	bool bEndGame;
+
+public:
+	bool IsEndGame() const;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

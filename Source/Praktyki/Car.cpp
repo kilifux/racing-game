@@ -66,6 +66,8 @@ void ACar::BeginPlay()
 	
 	MaxTime = GameInstanceBase->GetMaxTime();
 
+	InGameHUD->UpdateLapsText(CurrentLap, GameInstanceBase->GetLaps());
+	
 	if (GameInstanceBase->GetMode() == 1)
 	{
 		InGameHUD->UpdateMode(TEXT("PRACTICE"));
@@ -85,9 +87,10 @@ void ACar::Tick(float DeltaTime)
 	{
 		PlayerController->GameHasEnded(this, false);
 		bTimeExpired = true;
+		GetWorld()->GetTimerManager().PauseTimer(CurrentVelocityTimerHandle);
 		return;
 	}
-
+	
 	CurrentTime = PlayerController->GetGameTimeSinceCreation();
 	LastTime = PlayerController->GetGameTimeSinceCreation() - LapTime;
 	TimeLeft = MaxTime - CurrentTime;
@@ -133,16 +136,11 @@ void ACar::AddLap()
 void ACar::SetCurrentSpeed()
 {
 	CurrentSpeed = GetVelocity().Length();
-	if (InGameHUD == nullptr)
-	{
-		GetWorld()->GetTimerManager().ClearTimer(CurrentVelocityTimerHandle);
-	}
 	
-	if (InGameHUD)
+	if (InGameHUD != nullptr && !PlayerController->IsEndGame())
 	{
 		InGameHUD->UpdateCurrenSpeedText(GetCurrentSpeed());
 	}
-
 }
 
 void ACar::LookAround(const FInputActionValue& Value)

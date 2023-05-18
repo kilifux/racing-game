@@ -41,7 +41,7 @@ void UPlayerWidget::UpdateCurrentSpeedText(int Value)
 
 void UPlayerWidget::UpdateLapsText(int CurrentLap, int Laps)
 {
-	TXTLaps->SetText(FText::FromString("LAP  " + FString::FromInt(CurrentLap) + "/" + FString::FromInt(Laps)));
+	TXTLaps->SetText(FText::FromString(FString::FromInt(CurrentLap) + "/" + FString::FromInt(Laps)));
 }
 
 void UPlayerWidget::UpdateCurrentTimeText(float RaceTime, float LapTime)

@@ -37,11 +37,11 @@ void AFinishLine::BeginPlay()
 void AFinishLine::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor->IsA<ACar>() && PraktykiGameModeBase)
+	if (OtherActor->IsA<ACar>() && PraktykiGameModeBase != nullptr)
 	{
 		Car->AddLap();
 		PraktykiGameModeBase->PlayerCrossedFinishLine();
-		if (InGameHUD && Car)
+		if (InGameHUD != nullptr && Car != nullptr)
 		{
 			InGameHUD->UpdateLapsText(Car->GetCurrentLap(), PraktykiGameModeBase->GetLaps());
 		}
