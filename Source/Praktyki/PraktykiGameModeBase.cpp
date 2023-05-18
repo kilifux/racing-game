@@ -13,7 +13,6 @@ void APraktykiGameModeBase::BeginPlay()
 	CarPlayerController = Cast<ACarPlayerController>(GetWorld()->GetFirstPlayerController());
 	GameInstanceBase = GetGameInstance<UGameInstanceBase>();
 	Laps = GameInstanceBase->GetLaps();
-	//GetWorld()->GetTimerManager().SetTimer(TimeLeftTimerHandle, this, &APraktykiGameModeBase::CheckTimeLeft, 0.1f, true);
 }
 
 void APraktykiGameModeBase::PlayerCrossedFinishLine()
@@ -21,15 +20,6 @@ void APraktykiGameModeBase::PlayerCrossedFinishLine()
 	if (Car->GetCurrentLap() == Laps && CarPlayerController != nullptr)
 	{
 		CarPlayerController->GameHasEnded(Car, true);
-	}
-}
-
-void APraktykiGameModeBase::CheckTimeLeft()
-{
-	if (Car->GetTimeLeft() <= 0)
-	{
-		GetWorld()->GetTimerManager().ClearTimer(TimeLeftTimerHandle);
-		CarPlayerController->GameHasEnded(Car, false);
 	}
 }
 

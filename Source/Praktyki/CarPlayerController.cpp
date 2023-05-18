@@ -33,7 +33,7 @@ void ACarPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner)
 		
 		if (bIsWinner)
 		{
-			EndGameWidget->SetTableResults(0, 0, GetGameTimeSinceCreation());
+			EndGameWidget->SetTableResults(0, Car->GetBestTime(), GetGameTimeSinceCreation());
 		}
 		else
 		{
@@ -41,10 +41,10 @@ void ACarPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner)
 		}
 		
 		EndGameWidget->AddToViewport();
-		/*if (Car)
+		if (Car)
 		{
 			Car->DetachFromControllerPendingDestroy();
-		}*/
+		}
 	}
 	
 }

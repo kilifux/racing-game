@@ -42,6 +42,7 @@ ACar::ACar()
 	SteeringSensitivity = 5000;
 	MaxAngularSpeed = 50;
 	SkidThreshold = 0.3f;
+	bTimeExpired = false;
 }
 
 // Called when the game starts or when spawned
@@ -80,9 +81,10 @@ void ACar::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if (TimeLeft <= 0)
+	if (TimeLeft <= 0 && !bTimeExpired)
 	{
 		PlayerController->GameHasEnded(this, false);
+		bTimeExpired = true;
 		return;
 	}
 

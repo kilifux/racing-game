@@ -21,16 +21,13 @@ class PRAKTYKI_API APraktykiGameModeBase : public AGameModeBase
 	class ACar* Car;
 	class ACarPlayerController* CarPlayerController;
 	class UGameInstanceBase* GameInstanceBase;
-	FTimerHandle TimeLeftTimerHandle;
+
 public:
 	int GetLaps() const;
 
 	void SetLaps(const int InLaps);
 
 	void PlayerCrossedFinishLine();
-
-	UFUNCTION()
-	void CheckTimeLeft();
 
 protected:
 	// Called when the game starts or when spawned

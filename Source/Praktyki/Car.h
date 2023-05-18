@@ -94,6 +94,7 @@ private:
 
 	//Choose of camera perspective
 	bool Choose = true;
+	bool bTimeExpired;
 	float MaxSpeed;
 	
 	TArray<float> LapTimes;
