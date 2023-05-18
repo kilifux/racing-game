@@ -21,7 +21,6 @@ class PRAKTYKI_API AMainMenuGameModeBase : public AGameModeBase
 
 	APlayerController* PlayerController;
 
-	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

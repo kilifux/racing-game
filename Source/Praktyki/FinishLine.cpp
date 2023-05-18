@@ -1,8 +1,6 @@
 // Copyright 2023 Teyon. All Rights Reserved.
 
-
 #include "FinishLine.h"
-
 #include "Car.h"
 #include "InGameHUD.h"
 #include "Components/BoxComponent.h"
@@ -42,12 +40,11 @@ void AFinishLine::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 	if (OtherActor->IsA<ACar>() && PraktykiGameModeBase)
 	{
 		Car->AddLap();
-		if (InGameHUD)
+		PraktykiGameModeBase->PlayerCrossedFinishLine();
+		if (InGameHUD && Car)
 		{
 			InGameHUD->UpdateLapsText(Car->GetCurrentLap(), PraktykiGameModeBase->GetLaps());
 		}
-		
-		PraktykiGameModeBase->PlayerCrossedFinishLine();
 		
 	}
 }

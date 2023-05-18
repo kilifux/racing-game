@@ -48,9 +48,9 @@ class PRAKTYKI_API UMainMenuWidget : public UUserWidget
 	int Seconds;
 	
 	class UGameInstanceBase* GameInstanceBase;
-	
 
 public:
+	
 	UMainMenuWidget(const FObjectInitializer& ObjectInitializer);
 	virtual void NativeConstruct() override;
 
@@ -67,5 +67,4 @@ public:
 
 	UFUNCTION()
 	void StartLevel();
-	
 };

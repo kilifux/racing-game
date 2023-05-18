@@ -46,11 +46,7 @@ void UPlayerWidget::UpdateLapsText(int CurrentLap, int Laps)
 
 void UPlayerWidget::UpdateCurrentTimeText(float RaceTime, float LapTime)
 {
-	if (TXTCurrentTime && RaceTime > 0 && LapTime > 0)
-	{
-		TXTCurrentTime->SetText(FText::FromString("TIME   \t\t\t\t" + TimeToFormat(RaceTime) + "\nLAP TIME \t" + TimeToFormat(LapTime)));
-	}
-	
+	TXTCurrentTime->SetText(FText::FromString("TIME   \t\t\t\t" + TimeToFormat(RaceTime) + "\nLAP TIME \t " + TimeToFormat(LapTime)));
 }
 
 void UPlayerWidget::UpdateBestLastTimeText(float BestTime, float LastTime)
@@ -70,9 +66,7 @@ void UPlayerWidget::UpdateTable(int LapIndex, float Time, float DeltaBest)
 	{
 		NewLine = FString::Printf(TEXT("%d.\t\t\t%s\t\t\t+%s\n"), LapIndex, *TimeToFormat(Time), *TimeToFormat(abs(DeltaBest)));
 	}
-	 
-
+	
 	CurrentText += NewLine;
 	TXTTable->SetText(FText::FromString(CurrentText));
-	
 }

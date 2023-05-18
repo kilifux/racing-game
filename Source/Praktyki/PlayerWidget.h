@@ -46,8 +46,7 @@ public:
 
 	virtual void NativeConstruct() override;
 	FString TimeToFormat(float TimeToFormat);
-
-
+	
 	void UpdateMaxTime(float Value);
 	void UpdateMode(FString Mode);
 	void UpdateCurrentSpeedText(int Value);

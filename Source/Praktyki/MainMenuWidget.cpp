@@ -67,7 +67,6 @@ void UMainMenuWidget::GetModeValue(float Value)
 		LapSliderText->SetVisibility(ESlateVisibility::Visible);
 		LapSlider->SetVisibility(ESlateVisibility::Visible);
 	}
-	
 }
 
 void UMainMenuWidget::StartLevel()

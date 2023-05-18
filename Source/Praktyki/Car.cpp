@@ -3,52 +3,13 @@
 
 #include "Car.h"
 #include "InGameHUD.h"
+#include "CarPlayerController.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "GameInstanceBase.h"
 #include "EnhancedInputSubsystems.h"
-
-int ACar::GetCurrentSpeed() const
-{
-	return CurrentSpeed / 10;
-}
-
-void ACar::SetCurrentSpeed()
-{
-	CurrentSpeed = GetVelocity().Length();
-	if (InGameHUD)
-	{
-		InGameHUD->UpdateCurrenSpeedText(GetCurrentSpeed());
-	}
-}
-
-float ACar::GetTimeLeft() const
-{
-	return TimeLeft;
-}
-
-float ACar::GetFinalTime() const
-{
-	return FinalTime;
-}
-
-float ACar::GetBestTime() const
-{
-	return BestTime;
-}
-
-TArray<float> ACar::GetLapTimes() const
-{
-	return LapTimes;
-}
-
-float ACar::GetLastTime() const
-{
-	return LastTime;
-}
-
 
 // Sets default values
 ACar::ACar()
@@ -81,7 +42,6 @@ ACar::ACar()
 	SteeringSensitivity = 5000;
 	MaxAngularSpeed = 50;
 	SkidThreshold = 0.3f;
-	
 }
 
 // Called when the game starts or when spawned
@@ -89,7 +49,7 @@ void ACar::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	PlayerController = Cast<APlayerController>(Controller);
+	PlayerController = Cast<ACarPlayerController>(Controller);
 	
 	if (PlayerController)
 	{
@@ -98,9 +58,11 @@ void ACar::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
-	InGameHUD = Cast<AInGameHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	
 	GetWorld()->GetTimerManager().SetTimer(CurrentVelocityTimerHandle, this, &ACar::SetCurrentSpeed, 0.1f, true);
+	InGameHUD = Cast<AInGameHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	GameInstanceBase = GetGameInstance<UGameInstanceBase>();
+	
 	MaxTime = GameInstanceBase->GetMaxTime();
 
 	if (GameInstanceBase->GetMode() == 1)
@@ -117,15 +79,19 @@ void ACar::BeginPlay()
 void ACar::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	if (TimeLeft <= 0)
+	{
+		PlayerController->GameHasEnded(this, false);
+		return;
+	}
+
 	CurrentTime = PlayerController->GetGameTimeSinceCreation();
 	LastTime = PlayerController->GetGameTimeSinceCreation() - LapTime;
 	TimeLeft = MaxTime - CurrentTime;
+
 	InGameHUD->UpdateCurrentTimeText(CurrentTime, LastTime);
-	if (TimeLeft > 0)
-	{
-		InGameHUD->UpdateMaxTime(TimeLeft);
-	}
-	
+	InGameHUD->UpdateMaxTime(TimeLeft);
 }
 
 // Called to bind functionality to input
@@ -137,30 +103,44 @@ void ACar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
 		
 		EnhancedInputComponent->BindAction(ToggleCameraAction, ETriggerEvent::Started, this, &ACar::ToggleCamera);
-
 		EnhancedInputComponent->BindAction(LookAroundAction, ETriggerEvent::Triggered, this, &ACar::LookAround);
-
 		EnhancedInputComponent->BindAction(ThrottleAction, ETriggerEvent::Triggered, this, &ACar::Throttle);
 		EnhancedInputComponent->BindAction(SteeringAction, ETriggerEvent::Triggered, this, &ACar::Steering);
-
 	}
-
-}
-
-int ACar::GetCurrentLap() const
-{
-	return CurrentLap;
 }
 
 void ACar::AddLap()
 {
 	CurrentLap += 1;
-	LapTime = PlayerController->GetGameTimeSinceCreation();;
+	if (PlayerController)
+	{
+		LapTime = PlayerController->GetGameTimeSinceCreation();;
+	}
+	
 	LapTimes.Add(LastTime);
 	LapTimes.Sort();
-	InGameHUD->UpdateTable(LapTimes.Num(), LastTime, BestTime - LastTime);
-	BestTime = LapTimes[0];
-	InGameHUD->UpdateBestLastTimeText(BestTime, LastTime);
+	
+	if (InGameHUD)
+	{
+		InGameHUD->UpdateTable(LapTimes.Num(), LastTime, BestTime - LastTime);
+		BestTime = LapTimes[0];
+		InGameHUD->UpdateBestLastTimeText(BestTime, LastTime);
+	}
+}
+
+void ACar::SetCurrentSpeed()
+{
+	CurrentSpeed = GetVelocity().Length();
+	if (InGameHUD == nullptr)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(CurrentVelocityTimerHandle);
+	}
+	
+	if (InGameHUD)
+	{
+		InGameHUD->UpdateCurrenSpeedText(GetCurrentSpeed());
+	}
+
 }
 
 void ACar::LookAround(const FInputActionValue& Value)
@@ -201,16 +181,15 @@ void ACar::Throttle(const FInputActionValue& Value)
 
 void ACar::Steering(const FInputActionValue& Value)
 {
-	FVector SteeringVector = Value.Get<FVector>();
-	float SteeringAxis = SteeringVector.X;
+	SteeringAxisVector = Value.Get<FVector>();
 	
-	// Obliczenie kąta skrętu w zależności od wartości wejściowej i parametrów pojazdu
-	float SteeringAngle = SteeringAxis * SteeringSensitivity;
+	// Calculate the steering angle based on the input value and SteeringSensitivity
+	float SteeringAngle = SteeringAxisVector.X * SteeringSensitivity;
 
-	// Obliczenie wartości siły skręcającej w zależności od kąta skrętu i parametrów pojazdu
+	// Calculate the value of the turning force
 	float SteeringForce = SteeringAngle * SteeringSensitivity;
 
-	// Sprawdzenie kierunku ruchu pojazdu i odwrócenie znaku siły skręcającej, jeśli porusza się on wstecz
+	// Check the direction of vehicle movement and invert the sign of the turning force if it is moving in reverse
 	FVector Velocity = SkeletalMeshComponent->GetPhysicsLinearVelocity();
 	float Speed = Velocity.Size();
 	FVector ForwardVector = GetActorForwardVector();
@@ -219,29 +198,12 @@ void ACar::Steering(const FInputActionValue& Value)
 	{
 		SteeringForce *= -1;
 	}
-
-	// Ograniczenie siły skręcającej w przypadku utraty przyczepności lub przeskakiwania
-	float NormalizedSpeed = Speed / MaxSpeed;
-	float SkidFactor = FMath::Clamp(1.0f / SkidThreshold, 0.0f, 1.0f);
-	float SteeringReductionFactor = FMath::Lerp(1.0f, SkidFactor, 0.5);
-	float SteeringForceLimited = SteeringForce * NormalizedSpeed * SteeringReductionFactor;
-    
-	// Dodanie siły skręcającej do komponentu fizyki pojazdu
-	FVector TorqueVector = FVector(0.0f, 0.0f, SteeringForceLimited);
-	SkeletalMeshComponent->AddTorqueInRadians(TorqueVector);
 	
-	// Dodanie siły oporu bocznego w celu zapobiegania skręcaniu w drifty
-	if (GetVelocity().Length() > 50)
-	{
-		FVector SideDragForce = -GetActorRightVector() * 100000;
-		SkeletalMeshComponent->AddForce(SideDragForce);	
-	}
-	else
-	{
-		// Ustawienie prędkości kątowej na 0 stopni na sekundę
-		SkeletalMeshComponent->SetAllPhysicsAngularVelocityInDegrees(FVector((0.f, 0.f, 0.f)));
-	}
-
+	float NormalizedSpeed = Speed / MaxSpeed;
+	float SteeringForceLimited = SteeringForce * NormalizedSpeed;
+	FVector TorqueVector = FVector(0.0f, 0.0f, SteeringForceLimited);
+	
+	SkeletalMeshComponent->AddTorqueInRadians(TorqueVector);
 }
 
 void ACar::ToggleCamera()
@@ -259,9 +221,6 @@ void ACar::ToggleCamera()
 		CameraExteriorComponent->Activate();
 		Choose = true;
 	}
-
-	UE_LOG(LogTemp, Display, TEXT("Zmieniles kamere"));
-	
 }
 
 

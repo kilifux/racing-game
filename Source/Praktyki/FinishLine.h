@@ -20,7 +20,6 @@ class PRAKTYKI_API AFinishLine : public AActor
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* RightPole;
 	
-	
 	class AInGameHUD* InGameHUD;
 	class ACar* Car;
 	class APraktykiGameModeBase* PraktykiGameModeBase;
@@ -43,6 +42,4 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	
-
 };

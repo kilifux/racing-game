@@ -23,7 +23,6 @@ class PRAKTYKI_API APraktykiGameModeBase : public AGameModeBase
 	class UGameInstanceBase* GameInstanceBase;
 	FTimerHandle TimeLeftTimerHandle;
 public:
-	UFUNCTION(BlueprintCallable)
 	int GetLaps() const;
 
 	void SetLaps(const int InLaps);

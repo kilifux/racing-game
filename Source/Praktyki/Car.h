@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "InputActionValue.h"
 #include "GameFramework/Pawn.h"
+#include "InputActionValue.h"
 #include "Car.generated.h"
 
 class UCameraComponent;
@@ -14,9 +14,6 @@ UCLASS()
 class PRAKTYKI_API ACar : public APawn
 {
 	GENERATED_BODY()
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Mesh, meta = (AllowPrivateAccess = "true"))
-	class UCapsuleComponent* CapsuleComponent;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh, meta = (AllowPrivateAccess = "true"))
 	USkeletalMeshComponent* SkeletalMeshComponent;
@@ -51,25 +48,37 @@ class PRAKTYKI_API ACar : public APawn
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* ThrottleAction;
 	
-	
 	class AInGameHUD* InGameHUD;
-
 	class UGameInstanceBase* GameInstanceBase;
-	
-	bool Choose = true;
-
-	FVector ThrottleAxisVector;
-	APlayerController* PlayerController;
-	float MaxSpeed;
-	FVector CurrentVelocity;
+	class ACarPlayerController* PlayerController;
 
 public:
-	UFUNCTION(BlueprintCallable)
-	int GetCurrentSpeed() const;
+	// Sets default values for this pawn's properties
+	ACar();
+	
+	int GetCurrentSpeed() const { return CurrentSpeed / 10; }
 	
 	void SetCurrentSpeed();
+	
+	//Get the remaining time until the end of the race
+	float GetTimeLeft() const { return TimeLeft; }
+	
+	//Get the total sum of lap times
+	float GetFinalTime() const { return FinalTime; }
+	
+	//Get the time of the fastest lap
+	float GetBestTime() const { return BestTime; }
+	
+	TArray<float> GetLapTimes() const { return  LapTimes; }
+	
+	//Get the current lap number
+	int GetCurrentLap() const { return CurrentLap; }
+	
+	//Add one to the lap counter and update the lap times
+	void AddLap();
 
 private:
+	
 	float SteeringSensitivity;
 	float Acceleration;
 	float MaxAngularSpeed;
@@ -77,6 +86,15 @@ private:
 
 	int CurrentLap;
 	int CurrentSpeed;
+	FTimerHandle CurrentVelocityTimerHandle;
+	
+	FVector ThrottleAxisVector;
+	FVector SteeringAxisVector; 
+	FVector CurrentVelocity;
+
+	//Choose of camera perspective
+	bool Choose = true;
+	float MaxSpeed;
 	
 	TArray<float> LapTimes;
 	float LapTime = 0;
@@ -84,40 +102,21 @@ private:
 	float LastTime = 0;
 	float BestTime = 0;
 	float FinalTime = 0;
-	float MaxTime = 30;
+	
+	//The maximum race time set in the main menu
+	float MaxTime = 30;	
 	float TimeLeft = 30;
 
-public:
-	float GetTimeLeft() const;
-
-	float GetFinalTime() const;
-
-	UFUNCTION(BlueprintCallable)
-	float GetBestTime() const;
-
-	UFUNCTION(BlueprintCallable)
-	TArray<float> GetLapTimes() const;
-
-	UFUNCTION(BlueprintCallable)
-	float GetLastTime() const;
-
-private:
-	FTimerHandle CurrentVelocityTimerHandle;
-
-public:
-	// Sets default values for this pawn's properties
-	ACar();
-
 protected:
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void LookAround(const FInputActionValue& Value);
 
@@ -126,10 +125,4 @@ public:
 	void Throttle(const FInputActionValue& Value);
 
 	void ToggleCamera();
-
-	UFUNCTION(BlueprintCallable)
-	int GetCurrentLap() const;
-	
-	void AddLap();
-
 };

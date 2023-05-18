@@ -31,7 +31,11 @@ void AInGameHUD::BeginPlay()
 
 void AInGameHUD::RemoveWidget()
 {
-	PlayerWidget->RemoveFromParent();
+	if (PlayerWidget)
+	{
+		PlayerWidget->RemoveFromParent();
+		PlayerWidget->Destruct();
+	}
 }
 
 void AInGameHUD::UpdateCurrenSpeedText(int Value)
