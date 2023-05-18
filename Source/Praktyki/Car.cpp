@@ -123,15 +123,33 @@ void ACar::AddLap()
 	}
 	
 	LapTimes.Add(LastTime);
-	LapTimes.Sort();
+	DeltaTimes.Add(BestTime - LastTime);
 	
 	if (InGameHUD)
 	{
 		InGameHUD->UpdateTable(LapTimes.Num(), LastTime, BestTime - LastTime);
-		BestTime = LapTimes[0];
+		BestTime = Min(LapTimes);
 		InGameHUD->UpdateBestLastTimeText(BestTime, LastTime);
 	}
 }
+
+float ACar::Min(TArray<float> Array)
+{
+	check(Array.Num() > 0);
+
+	float MinValue = Array[0];
+	for (int i = 1; i < Array.Num(); ++i)
+	{
+		if (Array[i] < MinValue)
+		{
+			MinValue = Array[i];
+		}
+	}
+	
+	return MinValue;
+}
+		
+
 
 void ACar::SetCurrentSpeed()
 {

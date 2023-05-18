@@ -37,7 +37,30 @@ FString UEndGameWidget::TimeToFormat(float TimeToFormat)
 
 void UEndGameWidget::SetTableResults(int Index, float BestLapTime, float FinalTime)
 {
-	TXTTableResults->SetText(FText::FromString(FString::FromInt(Index) + "\t\t\t\t\t\t\t\t\t\t" + TimeToFormat(BestLapTime) + "\t\t\t\t\t\t\t\t\t\t" + TimeToFormat(FinalTime)));
+	TXTTableResults->SetText(FText::FromString(FString::FromInt(Index) + TimeToFormat(BestLapTime).LeftPad(38) + TimeToFormat(FinalTime).LeftPad(38)));
+}
+
+void UEndGameWidget::SetTableLaps(TArray<float> LapTimes, TArray<float> DeltaTimes)
+{
+	FString CurrentText = TXTTableLaps->GetText().ToString();
+	FString NewLine;
+	
+	if(LapTimes.Num() > 0)
+	{
+		for (int i = 0; i < LapTimes.Num(); i++)
+		{
+			if (DeltaTimes[i] > 0)
+			{
+				NewLine = FString::Printf(TEXT("%u.%s-%s\n"), i + 1, *TimeToFormat(LapTimes[i]).LeftPad(40).RightPad(65), *TimeToFormat(abs(DeltaTimes[i])));
+			}
+			else
+			{
+				NewLine = FString::Printf(TEXT("%u.%s+%s\n"), i + 1, *TimeToFormat(LapTimes[i]).LeftPad(40).RightPad(65), *TimeToFormat(abs(DeltaTimes[i])));
+			}
+			CurrentText += NewLine;
+			TXTTableLaps->SetText(FText::FromString(CurrentText));
+		}
+	}
 }
 
 void UEndGameWidget::RestartLevel()

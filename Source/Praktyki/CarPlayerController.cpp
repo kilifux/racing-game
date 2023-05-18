@@ -35,15 +35,16 @@ void ACarPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner)
 			InGameHUD->RemoveWidget();
 		}
 		
-		
 		if (bIsWinner)
 		{
 			EndGameWidget->SetTableResults(0, Car->GetBestTime(), GetGameTimeSinceCreation());
+			EndGameWidget->SetTableLaps(Car->GetLapTimes(), Car->GetDeltaTimes());
 			Car->SetActorTickEnabled(false);
 		}
 		else
 		{
 			EndGameWidget->SetTableResults(0, 0, 0);
+			EndGameWidget->SetTableLaps(Car->GetLapTimes(), Car->GetDeltaTimes());
 			Car->SetActorTickEnabled(false);
 		}
 		

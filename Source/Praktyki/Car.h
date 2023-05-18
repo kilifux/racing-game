@@ -69,7 +69,9 @@ public:
 	//Get the time of the fastest lap
 	float GetBestTime() const { return BestTime; }
 	
-	TArray<float> GetLapTimes() const { return  LapTimes; }
+	TArray<float> GetLapTimes() const { return LapTimes; }
+
+	TArray<float> GetDeltaTimes() const {return DeltaTimes; }
 	
 	//Get the current lap number
 	int GetCurrentLap() const { return CurrentLap; }
@@ -77,6 +79,8 @@ public:
 	//Add one to the lap counter and update the lap times
 	void AddLap();
 
+	float Min(TArray<float> Array);
+	
 private:
 	
 	float SteeringSensitivity;
@@ -98,6 +102,9 @@ private:
 	float MaxSpeed;
 	
 	TArray<float> LapTimes;
+
+private:
+	TArray<float> DeltaTimes;
 	float LapTime = 0;
 	float CurrentTime = 0;
 	float LastTime = 0;

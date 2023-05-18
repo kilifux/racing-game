@@ -26,6 +26,9 @@ class PRAKTYKI_API UEndGameWidget : public UUserWidget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
 	class UButton* ExitButton;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
+	class UTextBlock* TXTTableLaps;
+
 	int Minutes;
 	int Seconds;
 	int Milliseconds;
@@ -36,6 +39,9 @@ public:
 	virtual void NativeConstruct() override;
 
 	void SetTableResults(int Index, float BestLapTime, float FinalTime);
+
+	void SetTableLaps(TArray<float> LapTimes, TArray<float> DeltaTimes);
+	
 	FString TimeToFormat(float TimeToFormat);
 
 	UFUNCTION()
