@@ -46,12 +46,12 @@ void UPlayerWidget::UpdateLapsText(int CurrentLap, int Laps)
 
 void UPlayerWidget::UpdateCurrentTimeText(float RaceTime, float LapTime)
 {
-	TXTCurrentTime->SetText(FText::FromString("TIME   \t\t\t\t" + TimeToFormat(RaceTime) + "\nLAP TIME \t " + TimeToFormat(LapTime)));
+	TXTCurrentTime->SetText(FText::FromString("TIME" + TimeToFormat(RaceTime).LeftPad(21) + "\nLAP TIME \t " + TimeToFormat(LapTime)));
 }
 
 void UPlayerWidget::UpdateBestLastTimeText(float BestTime, float LastTime)
 {
-	TXTBestLastTime->SetText(FText::FromString("BEST  " + TimeToFormat(BestTime) + "\nLAST  " + TimeToFormat(LastTime)));
+	TXTBestLastTime->SetText(FText::FromString("BEST  " + TimeToFormat(BestTime).LeftPad(15) + "\nLAST  " + TimeToFormat(LastTime).LeftPad(15)));
 }
 
 void UPlayerWidget::UpdateTable(int LapIndex, float Time, float DeltaBest)
@@ -60,11 +60,11 @@ void UPlayerWidget::UpdateTable(int LapIndex, float Time, float DeltaBest)
 	FString NewLine;
 	if (DeltaBest > 0)
 	{
-		NewLine = FString::Printf(TEXT("%d.\t\t\t%s\t\t\t-%s\n"), LapIndex, *TimeToFormat(Time), *TimeToFormat(abs(DeltaBest)));
+		NewLine = FString::Printf(TEXT("%d.%s-%s\n"), LapIndex, *TimeToFormat(Time).LeftPad(15).RightPad(22), *TimeToFormat(abs(DeltaBest)));
 	}
 	else
 	{
-		NewLine = FString::Printf(TEXT("%d.\t\t\t%s\t\t\t+%s\n"), LapIndex, *TimeToFormat(Time), *TimeToFormat(abs(DeltaBest)));
+		NewLine = FString::Printf(TEXT("%d.%s+%s\n"), LapIndex, *TimeToFormat(Time).LeftPad(15).RightPad(22), *TimeToFormat(abs(DeltaBest)));
 	}
 	
 	CurrentText += NewLine;
