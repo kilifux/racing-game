@@ -56,7 +56,14 @@ public:
 
 	virtual void AddLap() override;
 
+	void CheckGround();
+
 private:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UUserWidget> ComeBackWidgetClass;
+
+	class UComeBackWidget* ComeBackWidget;
 	
 	//Choose of camera perspective
 	bool Choose = true;
@@ -64,11 +71,17 @@ private:
 
 	int CurrentSpeed;
 
+	FHitResult HitResult;
+	FCollisionQueryParams Params;
+	
 	FTimerHandle CurrentVelocityTimerHandle;
+	FTimerHandle CheckGroundTimerHandle;
 
 	//The maximum race time set in the main menu
 	float MaxTime = 30;	
 	float TimeLeft = 30;
+
+	int OffRoadTimes;
 	
 protected:
 	// Called to bind functionality to input

@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/InputComponent.h"
+#include "ComeBackWidget.h"
 #include "EnhancedInputComponent.h"
 #include "GameInstanceBase.h"
 #include "EnhancedInputSubsystems.h"
@@ -31,6 +32,8 @@ ACarPlayer::ACarPlayer()
 	CameraExteriorComponent->SetupAttachment(SpringArmExteriorComponent, USpringArmComponent::SocketName);
 
 	bTimeExpired = false;
+	Params.AddIgnoredActor(this);
+	OffRoadTimes = 0;
 }
 
 void ACarPlayer::BeginPlay()
@@ -46,6 +49,7 @@ void ACarPlayer::BeginPlay()
 	}
 	
 	GetWorld()->GetTimerManager().SetTimer(CurrentVelocityTimerHandle, this, &ACarPlayer::SetCurrentSpeed, 0.1f, true);
+	GetWorld()->GetTimerManager().SetTimer(CheckGroundTimerHandle, this, &ACarPlayer::CheckGround, 1.f, true);
 	InGameHUD = Cast<AInGameHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	GameInstanceBase = GetGameInstance<UGameInstanceBase>();
 	
@@ -68,6 +72,17 @@ void ACarPlayer::BeginPlay()
 	SetMaterialRearBoot(GameInstanceBase->GetRearBootIndex());
 	SetMaterialRearBumper(GameInstanceBase->GetRearBumperIndex());
 	SetMaterialOthers(GameInstanceBase->GetOthersIndex());
+
+	if (ComeBackWidgetClass)
+	{
+		ComeBackWidget = CreateWidget<UComeBackWidget>(GetWorld(), ComeBackWidgetClass);
+		if ( ComeBackWidget)
+		{
+			ComeBackWidget->AddToViewport();
+			ComeBackWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+	
 }
 
 void ACarPlayer::Tick(float DeltaTime)
@@ -154,6 +169,42 @@ void ACarPlayer::AddLap()
 	{
 		InGameHUD->UpdateTable(LapTimes.Num(), LastTime, DeltaTimes.Last());
 		InGameHUD->UpdateBestLastTimeText(BestTime, LastTime);
+	}
+}
+
+void ACarPlayer::CheckGround()
+{
+	if (InGameHUD != nullptr && !PlayerController->IsEndGame())
+	{
+		bool HasHit = GetWorld()->LineTraceSingleByChannel(HitResult,
+			GetActorLocation(),
+			GetActorLocation() - FVector(0, 0, 100),
+			ECC_GameTraceChannel1,
+			Params
+			);
+
+		if (HasHit && ComeBackWidget && HitResult.GetActor() != nullptr)
+		{
+			if (*HitResult.GetActor()->GetActorNameOrLabel() == FString("track_grass"))
+			{
+					ComeBackWidget->SetVisibility(ESlateVisibility::Visible);
+					OffRoadTimes += 1;
+					
+			}
+			else if (*HitResult.GetActor()->GetActorNameOrLabel() == FString("track_tarmac"))
+			{
+				ComeBackWidget->SetVisibility(ESlateVisibility::Hidden);
+				OffRoadTimes = 0;
+			}
+			
+		}
+		
+	}
+
+	if (OffRoadTimes == 5)
+	{
+		PlayerController->GameHasEnded(this, false);
+		ComeBackWidget->RemoveFromParent();
 	}
 }
 
