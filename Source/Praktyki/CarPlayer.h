@@ -55,10 +55,8 @@ public:
 	void SetCurrentSpeed();
 
 	virtual void AddLap() override;
-	
-	using ACarModel::Materials;
+
 private:
-	
 	
 	//Choose of camera perspective
 	bool Choose = true;

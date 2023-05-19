@@ -113,7 +113,7 @@ void ACarPlayer::LookAround(const FInputActionValue& Value)
 	else if (CameraExteriorComponent->IsActive() && !CameraInteriorComponent->IsActive())
 	{
 		FRotator CurrentRotation = SpringArmExteriorComponent->GetRelativeRotation();
-		float NewYaw = FMath::Clamp(CurrentRotation.Yaw + LookAxisVector.X, -35.0f, 35.0f);
+		float NewYaw = FMath::Clamp(CurrentRotation.Yaw + LookAxisVector.X, -50.0f, 50.0f);
 		SpringArmExteriorComponent->SetRelativeRotation(FRotator(CurrentRotation.Pitch, NewYaw, CurrentRotation.Roll));
 	}
 }

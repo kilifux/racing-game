@@ -38,6 +38,9 @@ public:
 protected:
 	
 	class ACarPlayerController* PlayerController;
+
+	UPROPERTY(EditAnywhere)
+	TArray<UMaterialInterface*> MaterialInterfaceLights;
 	
 	float SteeringSensitivity;
 	float Acceleration;

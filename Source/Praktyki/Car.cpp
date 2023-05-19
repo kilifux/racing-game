@@ -70,8 +70,13 @@ void ACar::Throttle(const FInputActionValue& Value)
 	if (ThrottleAxisVector.X <= 0)
 	{
 		ThrottleAxisVector.X /= 1.5;
+		RearBumper->SetMaterial(3, MaterialInterfaceLights[1]);
 	}
-
+	else
+	{
+		RearBumper->SetMaterial(3, MaterialInterfaceLights[0]);
+	}
+	
 	SkeletalMeshComponent->AddForce(GetActorForwardVector() * ThrottleAxisVector.X * Acceleration);
 	CurrentVelocity = SkeletalMeshComponent->GetPhysicsLinearVelocity();
 	
@@ -100,6 +105,7 @@ void ACar::Steering(const FInputActionValue& Value)
 	{
 		SteeringForce *= -1;
 	}
+
 	
 	float NormalizedSpeed = Speed / MaxSpeed;
 	float SteeringForceLimited = SteeringForce * NormalizedSpeed;
