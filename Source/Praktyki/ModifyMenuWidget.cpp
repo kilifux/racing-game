@@ -2,7 +2,6 @@
 
 
 #include "ModifyMenuWidget.h"
-
 #include "CarModel.h"
 #include "Components/Button.h"
 #include "Components/Slider.h"
@@ -25,6 +24,7 @@ void UModifyMenuWidget::NativeConstruct()
 	FrontBumperSlider->OnValueChanged.AddDynamic(this, &UModifyMenuWidget::GetFrontBumperSliderValue);
 	RearBumperSlider->OnValueChanged.AddDynamic(this, &UModifyMenuWidget::GetRearBumperSliderValue);
 	RearBootSlider->OnValueChanged.AddDynamic(this, &UModifyMenuWidget::GetRearBootSliderValue);
+	OthersSlider->OnValueChanged.AddDynamic(this, &UModifyMenuWidget::GetOthersSliderValue);
 
 	ExitButton->OnClicked.AddDynamic(this,&UModifyMenuWidget::ExitLevel);
 
@@ -33,6 +33,7 @@ void UModifyMenuWidget::NativeConstruct()
 	FrontBumperSlider->SetValue(GameInstanceBase->GetFrontBumperIndex());
 	RearBumperSlider->SetValue(GameInstanceBase->GetRearBumperIndex());
 	RearBootSlider->SetValue(GameInstanceBase->GetRearBootIndex());
+	OthersSlider->SetValue(GameInstanceBase->GetOthersIndex());
 }
 
 void UModifyMenuWidget::GetFrontHoodSliderValue(float Value)
@@ -63,6 +64,12 @@ void UModifyMenuWidget::GetRearBootSliderValue(float Value)
 {
 	GameInstanceBase->SetRearBootIndex(Value);
 	CarModel->SetMaterialRearBoot(Value);
+}
+
+void UModifyMenuWidget::GetOthersSliderValue(float Value)
+{
+	GameInstanceBase->SetOthersIndex(Value);
+	CarModel->SetMaterialOthers(Value);
 }
 
 void UModifyMenuWidget::ExitLevel()

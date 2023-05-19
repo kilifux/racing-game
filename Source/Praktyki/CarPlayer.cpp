@@ -67,6 +67,7 @@ void ACarPlayer::BeginPlay()
 	SetMaterialMainBody(GameInstanceBase->GetMainBodyIndex());
 	SetMaterialRearBoot(GameInstanceBase->GetRearBootIndex());
 	SetMaterialRearBumper(GameInstanceBase->GetRearBumperIndex());
+	SetMaterialOthers(GameInstanceBase->GetOthersIndex());
 }
 
 void ACarPlayer::Tick(float DeltaTime)

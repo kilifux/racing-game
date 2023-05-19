@@ -82,7 +82,6 @@ ACarModel::ACarModel()
 	MainBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Main Body"));
 	MainBody->SetupAttachment(SkeletalMeshComponent, TEXT("SK_Porsche_911_Gt3_R1"));
 	
-	
 	RearBoot = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Rear Boot"));
 	RearBoot->SetupAttachment(SkeletalMeshComponent, TEXT("boot_rear"));
 	
@@ -99,6 +98,12 @@ void ACarModel::BeginPlay()
 	FrontBumper->SetMaterial(0, Materials[GameInstanceBase->GetFrontBumperIndex()]);
 	RearBumper->SetMaterial(0, Materials[GameInstanceBase->GetRearBumperIndex()]);
 	RearBoot->SetMaterial(0, Materials[GameInstanceBase->GetRearBootIndex()]);
+
+	DoorLeft->SetMaterial(0, Materials[GameInstanceBase->GetOthersIndex()]);
+	DoorRight->SetMaterial(0, Materials[GameInstanceBase->GetOthersIndex()]);
+	FenderLeft->SetMaterial(0, Materials[GameInstanceBase->GetOthersIndex()]);
+	FenderRight->SetMaterial(0, Materials[GameInstanceBase->GetOthersIndex()]);
+	RearSpoiler->SetMaterial(0, Materials[GameInstanceBase->GetOthersIndex()]);
 }
 
 // Called every frame
@@ -131,6 +136,15 @@ void ACarModel::SetMaterialRearBumper(float Index)
 void ACarModel::SetMaterialRearBoot(float Index)
 {
 	RearBoot->SetMaterial(0, Materials[Index]);
+}
+
+void ACarModel::SetMaterialOthers(float Index)
+{
+	DoorLeft->SetMaterial(0, Materials[Index]);
+	DoorRight->SetMaterial(0, Materials[Index]);
+	FenderLeft->SetMaterial(0, Materials[Index]);
+	FenderRight->SetMaterial(0, Materials[Index]);
+	RearSpoiler->SetMaterial(0, Materials[Index]);
 }
 
 

@@ -6,6 +6,7 @@
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PraktykiGameModeBase.h"
+#include "NiagaraActor.h"
 
 // Sets default values
 AFinishLine::AFinishLine()
@@ -45,7 +46,11 @@ void AFinishLine::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 		{
 			InGameHUD->UpdateLapsText(Car->GetCurrentLap(), PraktykiGameModeBase->GetLaps());
 		}
-		
+
+		if ((Car->GetCurrentLap() + 1) == PraktykiGameModeBase->GetLaps())
+		{
+			GetWorld()->SpawnActor<ANiagaraActor>(FinishEffect, GetActorLocation(), GetActorRotation());
+		}
 	}
 }
 

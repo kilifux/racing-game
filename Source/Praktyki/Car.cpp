@@ -112,6 +112,8 @@ void ACar::Steering(const FInputActionValue& Value)
 	FVector TorqueVector = FVector(0.0f, 0.0f, SteeringForceLimited);
 	
 	SkeletalMeshComponent->AddTorqueInRadians(TorqueVector);
+	float NewRoll = FMath::Clamp(TorqueVector.Length() * SteeringAxisVector.X, -15.0f, 15.0f);
+	SteeringWheel->SetRelativeRotation(FRotator(-15.f, 0.f, NewRoll));
 }
 
 

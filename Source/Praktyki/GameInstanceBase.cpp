@@ -53,6 +53,16 @@ void UGameInstanceBase::SetRearBootIndex(const int NewRearBootIndex)
 	RearBootIndex = NewRearBootIndex;
 }
 
+int UGameInstanceBase::GetOthersIndex() const
+{
+	return OthersIndex;
+}
+
+void UGameInstanceBase::SetOthersIndex(const int NewOthersIndex)
+{
+	OthersIndex = NewOthersIndex;
+}
+
 int UGameInstanceBase::GetLaps() const
 {
 	return Laps;

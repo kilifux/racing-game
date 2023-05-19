@@ -109,6 +109,7 @@ public:
 	void SetMaterialFrontBumper(float Index);
 	void SetMaterialRearBumper(float Index);
 	void SetMaterialRearBoot(float Index);
+	void SetMaterialOthers(float Index);
 	
 	
 };

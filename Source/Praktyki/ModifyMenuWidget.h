@@ -32,6 +32,9 @@ class PRAKTYKI_API UModifyMenuWidget : public UUserWidget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
 	class USlider* RearBootSlider;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
+	class USlider* OthersSlider;
+
 	class UGameInstanceBase* GameInstanceBase;
 	class ACarModel* CarModel;
 	
@@ -53,6 +56,9 @@ public:
 	
 	UFUNCTION()
 	void GetRearBootSliderValue(float Value);
+
+	UFUNCTION()
+	void GetOthersSliderValue(float Value);
 
 	UFUNCTION()
 	void ExitLevel();

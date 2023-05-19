@@ -23,6 +23,7 @@ class PRAKTYKI_API UGameInstanceBase : public UGameInstance
 	int FrontBumperIndex;
 	int RearBumperIndex;
 	int RearBootIndex;
+	int OthersIndex;
 
 public:
 	
@@ -43,4 +44,6 @@ public:
 	void SetRearBumperIndex(const int NewRearBumperIndex);
 	int GetRearBootIndex() const;
 	void SetRearBootIndex(const int NewRearBootIndex);
+	int GetOthersIndex() const;
+	void SetOthersIndex(const int NewOthersIndex);
 };
