@@ -6,6 +6,7 @@
 #include "Components/Button.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
+#include "Engine/Internal/Kismet/BlueprintTypeConversions.h"
 #include "Kismet/GameplayStatics.h"
 
 UMainMenuWidget::UMainMenuWidget(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer)
@@ -25,6 +26,7 @@ void UMainMenuWidget::NativeConstruct()
 
 	StartButton->OnClicked.AddDynamic(this, &UMainMenuWidget::StartLevel);
 	ModifyCarButton->OnClicked.AddDynamic(this, &UMainMenuWidget::StartModifyMenu);
+	ExitGameButton->OnClicked.AddDynamic(this, &UMainMenuWidget::ExitGame);
 	
 	LapSliderText->SetVisibility(ESlateVisibility::Hidden);
 	LapSlider->SetVisibility(ESlateVisibility::Hidden);
@@ -79,4 +81,9 @@ void UMainMenuWidget::StartLevel()
 void UMainMenuWidget::StartModifyMenu()
 {
 	UGameplayStatics::OpenLevel(this, FName("ModifyMap"));
+}
+
+void UMainMenuWidget::ExitGame()
+{
+	UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, true);
 }

@@ -23,6 +23,9 @@ class PRAKTYKI_API UMainMenuWidget : public UUserWidget
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
 	class UButton* ModifyCarButton;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
+	class UButton* ExitGameButton;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
 	class USlider* LapSlider;
@@ -68,4 +71,7 @@ public:
 
 	UFUNCTION()
 	void StartModifyMenu();
+
+	UFUNCTION()
+	void ExitGame();
 };

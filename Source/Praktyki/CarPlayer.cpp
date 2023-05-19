@@ -113,6 +113,7 @@ void ACarPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 		EnhancedInputComponent->BindAction(LookAroundAction, ETriggerEvent::Triggered, this, &ACarPlayer::LookAround);
 		EnhancedInputComponent->BindAction(ThrottleAction, ETriggerEvent::Triggered, this, &ACar::Throttle);
 		EnhancedInputComponent->BindAction(SteeringAction, ETriggerEvent::Triggered, this, &ACar::Steering);
+		EnhancedInputComponent->BindAction(ExitAction, ETriggerEvent::Started, this, &ACar::Exit);
 	}
 }
 

@@ -33,6 +33,11 @@ void AFinishLine::BeginPlay()
 	Car = Cast<ACar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	PraktykiGameModeBase = Cast<APraktykiGameModeBase>(GetWorld()->GetAuthGameMode());
 	InGameHUD = Cast<AInGameHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+
+	if (PraktykiGameModeBase->GetLaps() == 1)
+	{
+		GetWorld()->SpawnActor<ANiagaraActor>(FinishEffect, GetActorLocation(), GetActorRotation());
+	}
 }
 
 void AFinishLine::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,

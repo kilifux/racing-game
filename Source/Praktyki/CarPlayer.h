@@ -39,6 +39,9 @@ class PRAKTYKI_API ACarPlayer : public ACar
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* ThrottleAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* ExitAction;
 
 	class AInGameHUD* InGameHUD;
 	class UGameInstanceBase* GameInstanceBase;

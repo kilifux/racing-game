@@ -3,6 +3,7 @@
 #include "Car.h"
 #include "CarPlayerController.h"
 #include "InputActionValue.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ACar::ACar()
@@ -84,6 +85,11 @@ void ACar::Throttle(const FInputActionValue& Value)
 	{
 		SkeletalMeshComponent->SetPhysicsLinearVelocity(CurrentVelocity.GetSafeNormal() * MaxSpeed);
 	}
+}
+
+void ACar::Exit()
+{
+	UGameplayStatics::OpenLevel(this, FName("MainMenu"));
 }
 
 void ACar::Steering(const FInputActionValue& Value)
