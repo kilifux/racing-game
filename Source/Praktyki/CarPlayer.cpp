@@ -145,7 +145,7 @@ void ACarPlayer::AddLap()
 	
 	if (InGameHUD)
 	{
-		InGameHUD->UpdateTable(LapTimes.Num(), LastTime, BestTime - LastTime);
+		InGameHUD->UpdateTable(LapTimes.Num(), LastTime, DeltaTimes.Last());
 		InGameHUD->UpdateBestLastTimeText(BestTime, LastTime);
 	}
 }
