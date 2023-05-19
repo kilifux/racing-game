@@ -3,6 +3,56 @@
 
 #include "GameInstanceBase.h"
 
+int UGameInstanceBase::GetFrontHoodIndex() const
+{
+	return FrontHoodIndex;
+}
+
+void UGameInstanceBase::SetFrontHoodIndex(const int NewFrontHoodIndex)
+{
+	FrontHoodIndex = NewFrontHoodIndex;
+}
+
+int UGameInstanceBase::GetMainBodyIndex() const
+{
+	return MainBodyIndex;
+}
+
+void UGameInstanceBase::SetMainBodyIndex(const int NewMainBodyIndex)
+{
+	MainBodyIndex = NewMainBodyIndex;
+}
+
+int UGameInstanceBase::GetFrontBumperIndex() const
+{
+	return FrontBumperIndex;
+}
+
+void UGameInstanceBase::SetFrontBumperIndex(const int NewFrontBumperIndex)
+{
+	FrontBumperIndex = NewFrontBumperIndex;
+}
+
+int UGameInstanceBase::GetRearBumperIndex() const
+{
+	return RearBumperIndex;
+}
+
+void UGameInstanceBase::SetRearBumperIndex(const int NewRearBumperIndex)
+{
+	RearBumperIndex = NewRearBumperIndex;
+}
+
+int UGameInstanceBase::GetRearBootIndex() const
+{
+	return RearBootIndex;
+}
+
+void UGameInstanceBase::SetRearBootIndex(const int NewRearBootIndex)
+{
+	RearBootIndex = NewRearBootIndex;
+}
+
 int UGameInstanceBase::GetLaps() const
 {
 	return Laps;

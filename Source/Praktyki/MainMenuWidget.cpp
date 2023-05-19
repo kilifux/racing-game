@@ -24,6 +24,8 @@ void UMainMenuWidget::NativeConstruct()
 	ModeSlider->OnValueChanged.AddDynamic(this, &UMainMenuWidget::GetModeValue);
 
 	StartButton->OnClicked.AddDynamic(this, &UMainMenuWidget::StartLevel);
+	ModifyCarButton->OnClicked.AddDynamic(this, &UMainMenuWidget::StartModifyMenu);
+	
 	LapSliderText->SetVisibility(ESlateVisibility::Hidden);
 	LapSlider->SetVisibility(ESlateVisibility::Hidden);
 	GameInstanceBase->SetLaps(1);
@@ -72,4 +74,9 @@ void UMainMenuWidget::GetModeValue(float Value)
 void UMainMenuWidget::StartLevel()
 {
 	UGameplayStatics::OpenLevel(this, FName("TestMap"));
+}
+
+void UMainMenuWidget::StartModifyMenu()
+{
+	UGameplayStatics::OpenLevel(this, FName("ModifyMap"));
 }

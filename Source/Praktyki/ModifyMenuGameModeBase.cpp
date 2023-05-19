@@ -3,7 +3,9 @@
 
 #include "ModifyMenuGameModeBase.h"
 #include "CarModel.h"
+#include "ModifyMenuWidget.h"
 #include "Kismet/GameplayStatics.h"
+
 
 void AModifyMenuGameModeBase::BeginPlay()
 {
@@ -11,9 +13,22 @@ void AModifyMenuGameModeBase::BeginPlay()
 
 	PlayerController = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	CarModel = Cast<ACarModel>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	
-	if (CarModel)
+
+	if (PlayerController)
 	{
-	
+		PlayerController->bShowMouseCursor = true;
+		PlayerController->bEnableClickEvents = true;
+		PlayerController->bEnableMouseOverEvents = true;
 	}
+	
+	if (ModifyMenuWidgetClass)
+	{
+		ModifyMenuWidget = CreateWidget<UModifyMenuWidget>(GetWorld(), ModifyMenuWidgetClass);
+
+		if (ModifyMenuWidget)
+		{
+			ModifyMenuWidget->AddToViewport();
+		}
+	}
+	
 }

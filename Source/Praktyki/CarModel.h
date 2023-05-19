@@ -86,6 +86,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh, meta = (AllowPrivateAccess = "true")) 
 	UStaticMeshComponent* RearBoot;
+
+	class UGameInstanceBase* GameInstanceBase;
 	
 public:
 	// Sets default values for this pawn's properties
@@ -95,8 +97,18 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Materials, meta = (AllowPrivateAccess = "true"))
+	TArray<UMaterialInterface*> Materials;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void SetMaterialFrontHood(float Index);
+	void SetMaterialMainBody(float Index);
+	void SetMaterialFrontBumper(float Index);
+	void SetMaterialRearBumper(float Index);
+	void SetMaterialRearBoot(float Index);
+	
 	
 };

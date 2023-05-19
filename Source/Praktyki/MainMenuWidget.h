@@ -6,8 +6,6 @@
 #include "Blueprint/UserWidget.h"
 #include "MainMenuWidget.generated.h"
 
-class UButton;
-class Slider;
 
 UCLASS()
 class PRAKTYKI_API UMainMenuWidget : public UUserWidget
@@ -15,17 +13,17 @@ class PRAKTYKI_API UMainMenuWidget : public UUserWidget
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UButton* RaceSettingsButton;
+	class UButton* RaceSettingsButton;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UButton* StartButton;
+	class UButton* StartButton;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UButton* TrackButton;
+	class UButton* TrackButton;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UButton* ModifyCarButton;
-
+	class UButton* ModifyCarButton;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget, AllowPrivateAccess = "true"))
 	class USlider* LapSlider;
 
@@ -67,4 +65,7 @@ public:
 
 	UFUNCTION()
 	void StartLevel();
+
+	UFUNCTION()
+	void StartModifyMenu();
 };

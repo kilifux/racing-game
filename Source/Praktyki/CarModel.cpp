@@ -2,6 +2,7 @@
 
 
 #include "CarModel.h"
+#include "GameInstanceBase.h"
 
 // Sets default values
 ACarModel::ACarModel()
@@ -14,7 +15,7 @@ ACarModel::ACarModel()
 	
 	SteeringWheel = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Steering Wheel"));
 	SteeringWheel->SetupAttachment(SkeletalMeshComponent);
-
+	
 	RearSpoiler = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Rear Spoiler"));
 	RearSpoiler->SetupAttachment(SkeletalMeshComponent, TEXT("spoiler_back"));
 
@@ -81,6 +82,7 @@ ACarModel::ACarModel()
 	MainBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Main Body"));
 	MainBody->SetupAttachment(SkeletalMeshComponent, TEXT("SK_Porsche_911_Gt3_R1"));
 	
+	
 	RearBoot = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Rear Boot"));
 	RearBoot->SetupAttachment(SkeletalMeshComponent, TEXT("boot_rear"));
 	
@@ -90,7 +92,13 @@ ACarModel::ACarModel()
 void ACarModel::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	GameInstanceBase = GetGameInstance<UGameInstanceBase>();
+	FrontHood->SetMaterial(0, Materials[GameInstanceBase->GetFrontHoodIndex()]);
+	MainBody->SetMaterial(0, Materials[GameInstanceBase->GetMainBodyIndex()]);
+	FrontBumper->SetMaterial(0, Materials[GameInstanceBase->GetFrontBumperIndex()]);
+	RearBumper->SetMaterial(0, Materials[GameInstanceBase->GetRearBumperIndex()]);
+	RearBoot->SetMaterial(0, Materials[GameInstanceBase->GetRearBootIndex()]);
 }
 
 // Called every frame
@@ -98,6 +106,31 @@ void ACarModel::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ACarModel::SetMaterialFrontHood(float Index)
+{
+	FrontHood->SetMaterial(0, Materials[Index]);
+}
+
+void ACarModel::SetMaterialMainBody(float Index)
+{
+	MainBody->SetMaterial(0, Materials[Index]);
+}
+
+void ACarModel::SetMaterialFrontBumper(float Index)
+{
+	FrontBumper->SetMaterial(0, Materials[Index]);
+}
+
+void ACarModel::SetMaterialRearBumper(float Index)
+{
+	RearBumper->SetMaterial(0, Materials[Index]);
+}
+
+void ACarModel::SetMaterialRearBoot(float Index)
+{
+	RearBoot->SetMaterial(0, Materials[Index]);
 }
 
 

@@ -61,6 +61,12 @@ void ACarPlayer::BeginPlay()
 	{
 		InGameHUD->UpdateMode(TEXT("RACE"));
 	}
+
+	SetMaterialFrontBumper(GameInstanceBase->GetFrontBumperIndex());
+	SetMaterialFrontHood(GameInstanceBase->GetFrontHoodIndex());
+	SetMaterialMainBody(GameInstanceBase->GetMainBodyIndex());
+	SetMaterialRearBoot(GameInstanceBase->GetRearBootIndex());
+	SetMaterialRearBumper(GameInstanceBase->GetRearBumperIndex());
 }
 
 void ACarPlayer::Tick(float DeltaTime)
