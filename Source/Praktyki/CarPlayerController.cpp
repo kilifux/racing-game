@@ -37,7 +37,7 @@ void ACarPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner)
 		
 		if (bIsWinner)
 		{
-			EndGameWidget->SetTableResults(0, Car->GetBestTime(), GetGameTimeSinceCreation());
+			EndGameWidget->SetTableResults(1, Car->GetBestTime(), GetGameTimeSinceCreation());
 			EndGameWidget->SetTableLaps(Car->GetLapTimes(), Car->GetDeltaTimes());
 			Car->SetActorTickEnabled(false);
 		}
