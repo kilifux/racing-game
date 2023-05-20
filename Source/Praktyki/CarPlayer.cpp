@@ -49,7 +49,7 @@ void ACarPlayer::BeginPlay()
 	}
 	
 	GetWorld()->GetTimerManager().SetTimer(CurrentVelocityTimerHandle, this, &ACarPlayer::SetCurrentSpeed, 0.1f, true);
-	GetWorld()->GetTimerManager().SetTimer(CheckGroundTimerHandle, this, &ACarPlayer::CheckGround, 1.f, true);
+	GetWorld()->GetTimerManager().SetTimer(CheckGroundTimerHandle, this, &ACarPlayer::CheckGround, 0.5f, true);
 	InGameHUD = Cast<AInGameHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	GameInstanceBase = GetGameInstance<UGameInstanceBase>();
 	
@@ -202,7 +202,7 @@ void ACarPlayer::CheckGround()
 		
 	}
 
-	if (OffRoadTimes == 5)
+	if (OffRoadTimes == 6)
 	{
 		PlayerController->GameHasEnded(this, false);
 		ComeBackWidget->RemoveFromParent();
