@@ -2,11 +2,10 @@
 
 
 #include "MainMenuWidget.h"
-#include "GameInstanceBase.h"
+#include "Praktyki/GameInstanceBase.h"
 #include "Components/Button.h"
 #include "Components/Slider.h"
 #include "Components/TextBlock.h"
-#include "Engine/Internal/Kismet/BlueprintTypeConversions.h"
 #include "Kismet/GameplayStatics.h"
 
 UMainMenuWidget::UMainMenuWidget(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer)

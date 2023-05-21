@@ -34,7 +34,6 @@ void AInGameHUD::RemoveWidget()
 	if (PlayerWidget != nullptr)
 	{
 		PlayerWidget->RemoveFromParent();
-		PlayerWidget->Destruct();
 	}
 }
 

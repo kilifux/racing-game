@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PraktykiGameModeBase.h"
-#include "Car.h"
-#include "CarPlayerController.h"
-#include "GameInstanceBase.h"
+#include "Praktyki/Cars/Car.h"
+#include "Praktyki/Player/CarPlayerController.h"
+#include "Praktyki/GameInstanceBase.h"
 #include "Kismet/GameplayStatics.h"
 
 void APraktykiGameModeBase::BeginPlay()

@@ -2,10 +2,10 @@
 
 
 #include "ModifyMenuWidget.h"
-#include "CarModel.h"
+#include "Praktyki/Cars/CarModel.h"
 #include "Components/Button.h"
 #include "Components/Slider.h"
-#include "GameInstanceBase.h"
+#include "Praktyki/GameInstanceBase.h"
 #include "Kismet/GameplayStatics.h"
 
 UModifyMenuWidget::UModifyMenuWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)

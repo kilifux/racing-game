@@ -2,9 +2,9 @@
 
 #include "CarPlayerController.h"
 #include "Blueprint/UserWidget.h"
-#include "Car.h"
-#include "EndGameWidget.h"
-#include "InGameHUD.h"
+#include "Praktyki/Cars/Car.h"
+#include "Praktyki/Widgets/EndGameWidget.h"
+#include "Praktyki/Widgets/InGameHUD.h"
 #include "Kismet/GameplayStatics.h"
 
 

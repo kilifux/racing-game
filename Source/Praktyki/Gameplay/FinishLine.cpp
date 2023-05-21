@@ -1,11 +1,11 @@
 // Copyright 2023 Teyon. All Rights Reserved.
 
 #include "FinishLine.h"
-#include "Car.h"
-#include "InGameHUD.h"
+#include "Praktyki/Cars/Car.h"
+#include "Praktyki/Widgets/InGameHUD.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "PraktykiGameModeBase.h"
+#include "Praktyki/GameModes/PraktykiGameModeBase.h"
 #include "NiagaraActor.h"
 
 // Sets default values

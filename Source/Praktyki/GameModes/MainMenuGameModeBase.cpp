@@ -2,7 +2,7 @@
 
 
 #include "MainMenuGameModeBase.h"
-#include "MainMenuWidget.h"
+#include "Praktyki/Widgets/MainMenuWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 

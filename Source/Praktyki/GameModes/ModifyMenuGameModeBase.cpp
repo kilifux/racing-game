@@ -2,8 +2,8 @@
 
 
 #include "ModifyMenuGameModeBase.h"
-#include "CarModel.h"
-#include "ModifyMenuWidget.h"
+#include "Praktyki/Cars/CarModel.h"
+#include "Praktyki/Widgets/ModifyMenuWidget.h"
 #include "Kismet/GameplayStatics.h"
 
 

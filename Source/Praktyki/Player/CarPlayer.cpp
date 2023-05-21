@@ -6,11 +6,11 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/InputComponent.h"
-#include "ComeBackWidget.h"
+#include "Praktyki/Widgets/ComeBackWidget.h"
 #include "EnhancedInputComponent.h"
-#include "GameInstanceBase.h"
+#include "Praktyki/GameInstanceBase.h"
 #include "EnhancedInputSubsystems.h"
-#include "InGameHUD.h"
+#include "Praktyki/Widgets/InGameHUD.h"
 
 ACarPlayer::ACarPlayer()
 {
@@ -202,7 +202,7 @@ void ACarPlayer::CheckGround()
 		
 	}
 
-	if (OffRoadTimes == 6)
+	if (OffRoadTimes == 6 && !PlayerController->IsEndGame())
 	{
 		PlayerController->GameHasEnded(this, false);
 		ComeBackWidget->RemoveFromParent();
