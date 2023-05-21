@@ -15,8 +15,7 @@ class PRAKTYKI_API ACarPlayerController : public APlayerController
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widgets", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UUserWidget> EndGameWidgetClass;
-
-	//class UEndGameWidget* EndGameWidget;
+	
 	class AInGameHUD* InGameHUD;
 	class ACar* Car;
 
@@ -25,11 +24,10 @@ class PRAKTYKI_API ACarPlayerController : public APlayerController
 public:
 	bool IsEndGame() const;
 
+	virtual void GameHasEnded(AActor* EndGameFocus, bool bIsWinner) override;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:
-	virtual void GameHasEnded(AActor* EndGameFocus, bool bIsWinner) override;
 	
 };

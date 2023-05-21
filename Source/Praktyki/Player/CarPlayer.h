@@ -58,7 +58,8 @@ public:
 	void SetCurrentSpeed();
 
 	virtual void AddLap() override;
-
+	
+	//Check if we are off-road
 	void CheckGround();
 
 private:
@@ -71,7 +72,8 @@ private:
 	//Choose of camera perspective
 	bool Choose = true;
 	bool bTimeExpired;
-
+	
+	int OffRoadTimes;
 	int CurrentSpeed;
 
 	FHitResult HitResult;
@@ -84,8 +86,6 @@ private:
 	float MaxTime = 30;	
 	float TimeLeft = 30;
 
-	int OffRoadTimes;
-	
 protected:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

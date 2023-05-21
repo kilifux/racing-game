@@ -50,6 +50,7 @@ void ACarPlayer::BeginPlay()
 	
 	GetWorld()->GetTimerManager().SetTimer(CurrentVelocityTimerHandle, this, &ACarPlayer::SetCurrentSpeed, 0.1f, true);
 	GetWorld()->GetTimerManager().SetTimer(CheckGroundTimerHandle, this, &ACarPlayer::CheckGround, 0.5f, true);
+	
 	InGameHUD = Cast<AInGameHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	GameInstanceBase = GetGameInstance<UGameInstanceBase>();
 	
@@ -190,16 +191,13 @@ void ACarPlayer::CheckGround()
 			{
 					ComeBackWidget->SetVisibility(ESlateVisibility::Visible);
 					OffRoadTimes += 1;
-					
 			}
 			else if (*HitResult.GetActor()->GetActorNameOrLabel() == FString("track_tarmac"))
 			{
 				ComeBackWidget->SetVisibility(ESlateVisibility::Hidden);
 				OffRoadTimes = 0;
 			}
-			
 		}
-		
 	}
 
 	if (OffRoadTimes == 6 && !PlayerController->IsEndGame())

@@ -9,6 +9,7 @@
 void APraktykiGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
+	
 	Car = Cast<ACar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	CarPlayerController = Cast<ACarPlayerController>(GetWorld()->GetFirstPlayerController());
 	GameInstanceBase = GetGameInstance<UGameInstanceBase>();
@@ -17,9 +18,12 @@ void APraktykiGameModeBase::BeginPlay()
 
 void APraktykiGameModeBase::PlayerCrossedFinishLine()
 {
-	if (Car->GetCurrentLap() == Laps && CarPlayerController != nullptr)
+	if (Car && CarPlayerController)
 	{
-		CarPlayerController->GameHasEnded(Car, true);
+		if (Car->GetCurrentLap() == Laps)
+		{
+			CarPlayerController->GameHasEnded(Car, true);
+		}
 	}
 }
 

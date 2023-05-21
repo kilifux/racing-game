@@ -32,36 +32,21 @@ void ACar::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	
 	CurrentTime = PlayerController->GetGameTimeSinceCreation();
-	LastTime = PlayerController->GetGameTimeSinceCreation() - LapTime;
+	LastTime = CurrentTime - LapTime;
 }
 
 void ACar::AddLap()
 {
 	CurrentLap += 1;
+	
 	if (PlayerController)
 	{
-		LapTime = PlayerController->GetGameTimeSinceCreation();;
+		LapTime = CurrentTime;
 	}
 	
 	LapTimes.Add(LastTime);
 	DeltaTimes.Add(BestTime - LastTime);
 	BestTime = Min(LapTimes);
-}
-
-float ACar::Min(TArray<float> Array)
-{
-	check(Array.Num() > 0);
-
-	float MinValue = Array[0];
-	for (int i = 1; i < Array.Num(); ++i)
-	{
-		if (Array[i] < MinValue)
-		{
-			MinValue = Array[i];
-		}
-	}
-	
-	return MinValue;
 }
 
 void ACar::Throttle(const FInputActionValue& Value)
@@ -87,11 +72,6 @@ void ACar::Throttle(const FInputActionValue& Value)
 	}
 }
 
-void ACar::Exit()
-{
-	UGameplayStatics::OpenLevel(this, FName("MainMenu"));
-}
-
 void ACar::Steering(const FInputActionValue& Value)
 {
 	SteeringAxisVector = Value.Get<FVector>();
@@ -111,7 +91,6 @@ void ACar::Steering(const FInputActionValue& Value)
 	{
 		SteeringForce *= -1;
 	}
-
 	
 	float NormalizedSpeed = Speed / MaxSpeed;
 	float SteeringForceLimited = SteeringForce * NormalizedSpeed;
@@ -122,6 +101,23 @@ void ACar::Steering(const FInputActionValue& Value)
 	SteeringWheel->SetRelativeRotation(FRotator(-15.f, 0.f, NewRoll));
 }
 
+float ACar::Min(TArray<float> Array)
+{
+	check(Array.Num() > 0);
 
+	float MinValue = Array[0];
+	for (int i = 1; i < Array.Num(); ++i)
+	{
+		if (Array[i] < MinValue)
+		{
+			MinValue = Array[i];
+		}
+	}
+	
+	return MinValue;
+}
 
-
+void ACar::Exit()
+{
+	UGameplayStatics::OpenLevel(this, FName("MainMenu"));
+}

@@ -33,7 +33,8 @@ public:
 	//Add one to the lap counter and update the lap times
 	virtual void AddLap();
 
-	float Min(TArray<float> Array);
+	//Uses to get Best Time 
+	static float Min(TArray<float> Array);
 	
 protected:
 	
@@ -66,11 +67,12 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	
-	void Steering(const FInputActionValue& Value);
 
 	void Throttle(const FInputActionValue& Value);
-
+	
+	void Steering(const FInputActionValue& Value);
+	
+	//Exit to Main Menu by clicking ESC
 	void Exit();
 
 protected:

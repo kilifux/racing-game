@@ -19,10 +19,10 @@ void AInGameHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (PlayerWidgetClass != nullptr)
+	if (PlayerWidgetClass)
 	{
 		PlayerWidget = CreateWidget<UPlayerWidget>(GetWorld(), PlayerWidgetClass);
-		if (PlayerWidget != nullptr)
+		if (PlayerWidget)
 		{
 			PlayerWidget->AddToViewport();
 		}
@@ -31,7 +31,7 @@ void AInGameHUD::BeginPlay()
 
 void AInGameHUD::RemoveWidget()
 {
-	if (PlayerWidget != nullptr)
+	if (PlayerWidget)
 	{
 		PlayerWidget->RemoveFromParent();
 	}
@@ -39,7 +39,7 @@ void AInGameHUD::RemoveWidget()
 
 void AInGameHUD::UpdateCurrenSpeedText(int Value)
 {
-	if (PlayerWidget != nullptr)
+	if (PlayerWidget)
 	{
 		PlayerWidget->UpdateCurrentSpeedText(Value);
 	}
@@ -47,7 +47,7 @@ void AInGameHUD::UpdateCurrenSpeedText(int Value)
 
 void AInGameHUD::UpdateLapsText(int CurrentLap, int Laps)
 {
-	if (PlayerWidget != nullptr)
+	if (PlayerWidget)
 	{
 		PlayerWidget->UpdateLapsText(CurrentLap, Laps);
 	}
@@ -55,7 +55,7 @@ void AInGameHUD::UpdateLapsText(int CurrentLap, int Laps)
 
 void AInGameHUD::UpdateCurrentTimeText(float RaceTime, float LapTime)
 {
-	if (PlayerWidget != nullptr)
+	if (PlayerWidget)
 	{
 		PlayerWidget->UpdateCurrentTimeText(RaceTime,LapTime);
 	}
@@ -63,7 +63,7 @@ void AInGameHUD::UpdateCurrentTimeText(float RaceTime, float LapTime)
 
 void AInGameHUD::UpdateBestLastTimeText(float BestTime, float LastTime)
 {
-	if (PlayerWidget != nullptr)
+	if (PlayerWidget)
 	{
 		PlayerWidget->UpdateBestLastTimeText(BestTime, LastTime);
 	}
@@ -71,7 +71,7 @@ void AInGameHUD::UpdateBestLastTimeText(float BestTime, float LastTime)
 
 void AInGameHUD::UpdateTable(int LapIndex, float Time, float DeltaBest)
 {
-	if (PlayerWidget != nullptr)
+	if (PlayerWidget)
 	{
 		PlayerWidget->UpdateTable(LapIndex, Time, DeltaBest);
 	}
@@ -79,7 +79,7 @@ void AInGameHUD::UpdateTable(int LapIndex, float Time, float DeltaBest)
 
 void AInGameHUD::UpdateMaxTime(float Value)
 {
-	if (PlayerWidget != nullptr)
+	if (PlayerWidget)
 	{
 		PlayerWidget->UpdateMaxTime(Value);
 	}
@@ -87,7 +87,7 @@ void AInGameHUD::UpdateMaxTime(float Value)
 
 void AInGameHUD::UpdateMode(FString Mode)
 {
-	if (PlayerWidget != nullptr)
+	if (PlayerWidget)
 	{
 		PlayerWidget->UpdateMode(Mode);
 	}

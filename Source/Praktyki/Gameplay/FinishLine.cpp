@@ -33,21 +33,16 @@ void AFinishLine::BeginPlay()
 	Car = Cast<ACar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	PraktykiGameModeBase = Cast<APraktykiGameModeBase>(GetWorld()->GetAuthGameMode());
 	InGameHUD = Cast<AInGameHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
-
-	if (PraktykiGameModeBase->GetLaps() == 1)
-	{
-		GetWorld()->SpawnActor<ANiagaraActor>(FinishEffect, GetActorLocation(), GetActorRotation());
-	}
 }
 
 void AFinishLine::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor->IsA<ACar>() && PraktykiGameModeBase != nullptr)
+	if (OtherActor->IsA<ACar>() && PraktykiGameModeBase)
 	{
 		Car->AddLap();
 		PraktykiGameModeBase->PlayerCrossedFinishLine();
-		if (InGameHUD != nullptr && Car != nullptr)
+		if (InGameHUD && Car)
 		{
 			InGameHUD->UpdateLapsText(Car->GetCurrentLap(), PraktykiGameModeBase->GetLaps());
 		}
@@ -57,12 +52,5 @@ void AFinishLine::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 			GetWorld()->SpawnActor<ANiagaraActor>(FinishEffect, GetActorLocation(), GetActorRotation());
 		}
 	}
-}
-
-// Called every frame
-void AFinishLine::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
 }
 

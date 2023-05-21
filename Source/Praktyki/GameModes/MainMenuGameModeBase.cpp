@@ -26,5 +26,4 @@ void AMainMenuGameModeBase::BeginPlay()
 			MainMenuWidget->AddToViewport();
 		}
 	}
-	
 }

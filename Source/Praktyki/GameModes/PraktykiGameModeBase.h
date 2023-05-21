@@ -23,6 +23,7 @@ class PRAKTYKI_API APraktykiGameModeBase : public AGameModeBase
 	class UGameInstanceBase* GameInstanceBase;
 
 public:
+	
 	int GetLaps() const;
 
 	void SetLaps(const int InLaps);

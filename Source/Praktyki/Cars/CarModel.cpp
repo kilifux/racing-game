@@ -1,6 +1,5 @@
 // Copyright 2023 Teyon. All Rights Reserved.
 
-
 #include "CarModel.h"
 #include "Praktyki/GameInstanceBase.h"
 
@@ -93,52 +92,41 @@ void ACarModel::BeginPlay()
 	Super::BeginPlay();
 
 	GameInstanceBase = GetGameInstance<UGameInstanceBase>();
-	FrontHood->SetMaterial(0, Materials[GameInstanceBase->GetFrontHoodIndex()]);
-	MainBody->SetMaterial(0, Materials[GameInstanceBase->GetMainBodyIndex()]);
-	FrontBumper->SetMaterial(0, Materials[GameInstanceBase->GetFrontBumperIndex()]);
-	RearBumper->SetMaterial(0, Materials[GameInstanceBase->GetRearBumperIndex()]);
-	RearBoot->SetMaterial(0, Materials[GameInstanceBase->GetRearBootIndex()]);
 
-	DoorLeft->SetMaterial(0, Materials[GameInstanceBase->GetOthersIndex()]);
-	DoorRight->SetMaterial(0, Materials[GameInstanceBase->GetOthersIndex()]);
-	FenderLeft->SetMaterial(0, Materials[GameInstanceBase->GetOthersIndex()]);
-	FenderRight->SetMaterial(0, Materials[GameInstanceBase->GetOthersIndex()]);
-	RearSpoiler->SetMaterial(0, Materials[GameInstanceBase->GetOthersIndex()]);
+	SetMaterialFrontHood(GameInstanceBase->GetFrontHoodIndex());
+	SetMaterialMainBody(GameInstanceBase->GetMainBodyIndex());
+	SetMaterialFrontBumper(GameInstanceBase->GetFrontBumperIndex());
+	SetMaterialRearBumper(GameInstanceBase->GetRearBumperIndex());
+	SetMaterialRearBoot(GameInstanceBase->GetRearBootIndex());
+	SetMaterialOthers(GameInstanceBase->GetOthersIndex());
 }
 
-// Called every frame
-void ACarModel::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-void ACarModel::SetMaterialFrontHood(float Index)
+void ACarModel::SetMaterialFrontHood(const float Index)
 {
 	FrontHood->SetMaterial(0, Materials[Index]);
 }
 
-void ACarModel::SetMaterialMainBody(float Index)
+void ACarModel::SetMaterialMainBody(const float Index)
 {
 	MainBody->SetMaterial(0, Materials[Index]);
 }
 
-void ACarModel::SetMaterialFrontBumper(float Index)
+void ACarModel::SetMaterialFrontBumper(const float Index)
 {
 	FrontBumper->SetMaterial(0, Materials[Index]);
 }
 
-void ACarModel::SetMaterialRearBumper(float Index)
+void ACarModel::SetMaterialRearBumper(const float Index)
 {
 	RearBumper->SetMaterial(0, Materials[Index]);
 }
 
-void ACarModel::SetMaterialRearBoot(float Index)
+void ACarModel::SetMaterialRearBoot(const float Index)
 {
 	RearBoot->SetMaterial(0, Materials[Index]);
 }
 
-void ACarModel::SetMaterialOthers(float Index)
+void ACarModel::SetMaterialOthers(const float Index)
 {
 	DoorLeft->SetMaterial(0, Materials[Index]);
 	DoorRight->SetMaterial(0, Materials[Index]);

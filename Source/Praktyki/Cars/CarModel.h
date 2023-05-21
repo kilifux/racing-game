@@ -10,6 +10,7 @@ UCLASS()
 class PRAKTYKI_API ACarModel : public APawn
 {
 	GENERATED_BODY()
+	
 protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh, meta = (AllowPrivateAccess = "true"))
@@ -87,29 +88,25 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh, meta = (AllowPrivateAccess = "true")) 
 	UStaticMeshComponent* RearBoot;
 
-	class UGameInstanceBase* GameInstanceBase;
-	
 public:
 	// Sets default values for this pawn's properties
 	ACarModel();
-
+	
+	//Setters for changing car Material in Modify Menu
+	void SetMaterialFrontHood(const float Index);
+	void SetMaterialMainBody(const float Index);
+	void SetMaterialFrontBumper(const float Index);
+	void SetMaterialRearBumper(const float Index);
+	void SetMaterialRearBoot(const float Index);
+	void SetMaterialOthers(const float Index);
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	
+	//Car materials use in Modify Menu
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Materials, meta = (AllowPrivateAccess = "true"))
 	TArray<UMaterialInterface*> Materials;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	void SetMaterialFrontHood(float Index);
-	void SetMaterialMainBody(float Index);
-	void SetMaterialFrontBumper(float Index);
-	void SetMaterialRearBumper(float Index);
-	void SetMaterialRearBoot(float Index);
-	void SetMaterialOthers(float Index);
-	
-	
+	class UGameInstanceBase* GameInstanceBase;
 };
