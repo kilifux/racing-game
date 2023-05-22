@@ -6,15 +6,13 @@
 #include "GameFramework/PlayerController.h"
 #include "CarPlayerController.generated.h"
 
-class UUserWidget;
-
 UCLASS()
 class PRAKTYKI_API ACarPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widgets", meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UUserWidget> EndGameWidgetClass;
+	TSubclassOf<class UUserWidget> EndGameWidgetClass;
 	
 	class AInGameHUD* InGameHUD;
 	class ACar* Car;

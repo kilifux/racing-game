@@ -83,7 +83,6 @@ ACarModel::ACarModel()
 	
 	RearBoot = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Rear Boot"));
 	RearBoot->SetupAttachment(SkeletalMeshComponent, TEXT("boot_rear"));
-	
 }
 
 // Called when the game starts or when spawned

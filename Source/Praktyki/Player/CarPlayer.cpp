@@ -1,6 +1,5 @@
 // Copyright 2023 Teyon. All Rights Reserved.
 
-
 #include "CarPlayer.h"
 #include "CarPlayerController.h"
 #include "Camera/CameraComponent.h"
@@ -83,7 +82,6 @@ void ACarPlayer::BeginPlay()
 			ComeBackWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
-	
 }
 
 void ACarPlayer::Tick(float DeltaTime)
@@ -176,7 +174,7 @@ void ACarPlayer::AddLap()
 
 void ACarPlayer::CheckGround()
 {
-	if (InGameHUD != nullptr && !PlayerController->IsEndGame())
+	if (InGameHUD && !PlayerController->IsEndGame())
 	{
 		bool HasHit = GetWorld()->LineTraceSingleByChannel(HitResult,
 			GetActorLocation(),
